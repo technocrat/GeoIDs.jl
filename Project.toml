@@ -1,0 +1,15 @@
+name = "GeoIDs"
+uuid = "25e60e9c-9b34-47d8-b7be-b6c1c3d92e0e"
+authors = ["Richard Careaga <public@careaga.net>"]
+version = "0.1.0"
+
+[deps]
+ArchGDAL = "c9ce4bd3-c3d5-55b8-8973-c0e20141b8c3"
+DataFrames = "a93c6f00-e57d-5684-b7b6-d8193f3e46c0"
+Dates = "ade2ca70-3891-5945-98fb-dc099432e06a"
+Documenter = "e30172f5-a6a5-5a46-863b-614d45cd2de4"
+JSON3 = "0f8b85d8-7281-11e9-16c2-39a750bddbf1"
+LibPQ = "194296ae-ab2e-5f79-8cd4-7183a0a5a0d1"
+
+[compat]
+julia = "1.6" 

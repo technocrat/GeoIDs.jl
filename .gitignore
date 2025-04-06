@@ -1,0 +1,35 @@
+# Julia specific files
+*.jl.cov
+*.jl.*.cov
+*.jl.mem
+deps/deps.jl
+*.jlprof
+
+# Documentation build artifacts
+docs/build/
+docs/site/
+
+# Backup files
+*~
+.#*
+\#*#
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Julia environemnt files
+Manifest.toml
+!docs/Manifest.toml
+
+# Logs and temporary files
+*.log
+*.swp
+.vscode/
+.idea/
+.ipynb_checkpoints/ 
