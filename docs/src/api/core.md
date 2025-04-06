@@ -23,6 +23,8 @@ load_predefined_geoids
 initialize_database
 ```
 
+> **Note**: The `initialize_database` function now uses a local shapefile from the GeoIDs.jl/data directory instead of downloading it from the internet. The function also now uses PostgreSQL's default socket authentication for local connections.
+
 ## Backup and Restore
 
 These functions enable exporting and importing GEOID sets with their complete version history:

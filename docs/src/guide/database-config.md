@@ -13,8 +13,8 @@ You can customize the database connection using these environment variables:
 | `GEOIDS_DB_NAME` | Database name | `tiger` |
 | `GEOIDS_DB_HOST` | Database host | `localhost` |
 | `GEOIDS_DB_PORT` | Database port | `5432` |
-| `GEOIDS_DB_USER` | Database user | Current system user |
-| `GEOIDS_DB_PASSWORD` | Database password | Empty string |
+
+> **Note**: The package now uses PostgreSQL's default socket authentication which generally doesn't require username and password on local development setups. This is especially convenient on macOS with Homebrew installations.
 
 ## Setting Environment Variables
 
@@ -27,8 +27,6 @@ You can set environment variables before loading the package:
 ENV["GEOIDS_DB_NAME"] = "my_census_db"
 ENV["GEOIDS_DB_HOST"] = "db.example.com"
 ENV["GEOIDS_DB_PORT"] = "5433"
-ENV["GEOIDS_DB_USER"] = "census_user"
-ENV["GEOIDS_DB_PASSWORD"] = "secure_password"
 
 # Load package
 using GeoIDs
@@ -50,8 +48,22 @@ For a more permanent solution, you can add configuration to your `.bashrc`, `.zs
 # Add to your .bashrc or .zshrc
 export GEOIDS_DB_NAME=my_census_db
 export GEOIDS_DB_HOST=db.example.com
-export GEOIDS_DB_USER=census_user
 ```
+
+## Connection String Format
+
+The connection string is formatted as:
+
+```
+postgresql://host:port/dbname
+```
+
+For example:
+```
+postgresql://localhost:5432/tiger
+```
+
+This format uses PostgreSQL's default authentication mechanism, which is socket authentication on most development setups.
 
 ## Database Setup
 
@@ -66,7 +78,7 @@ All required tables are created automatically when you run the `initialize_datab
 
 1. Creates the `census` schema if it doesn't exist
 2. Enables the PostGIS extension if needed
-3. Downloads and extracts the U.S. Census TIGER/Line county shapefile
+3. Uses the local U.S. Census TIGER/Line county shapefile from the GeoIDs.jl/data directory
 4. Creates the `census.counties` table with proper schema
 5. Loads county data with GEOIDs and geometries
 6. Sets up the GEOID set management tables

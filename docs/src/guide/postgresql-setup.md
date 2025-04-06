@@ -2,6 +2,10 @@
 
 GeoIDs.jl requires a PostgreSQL database with the PostGIS extension. This guide walks you through setting up a local PostgreSQL server on both macOS and Ubuntu.
 
+## Database Authentication
+
+> **Note**: GeoIDs.jl now uses PostgreSQL's default socket authentication which doesn't require username and password on local development setups. This is especially convenient on macOS with Homebrew installations where the user running Julia has permission to connect to the database.
+
 ## macOS Setup
 
 ### Method 1: Using Homebrew (Recommended)
@@ -30,6 +34,8 @@ brew services start postgresql@17
 ```bash
 psql postgres
 ```
+
+With the Homebrew installation, PostgreSQL is configured to allow socket authentication for the current user, which means you won't need to provide a username or password when connecting from Julia.
 
 ### Method 2: Using PostgreSQL.app
 

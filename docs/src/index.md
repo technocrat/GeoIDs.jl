@@ -15,7 +15,7 @@ GeoIDs.jl provides a comprehensive solution for working with Census GEOID identi
 - **Apply Set Operations**: Union, intersection, difference, and symmetric difference
 - **Filter Spatially**: Select counties by latitude, longitude, distance, or bounding box
 - **Back Up and Restore**: Export and import full version history
-- **Access Census Data**: Integrate with TIGER/Line shapefiles
+- **Access Census Data**: Integrate with TIGER/Line shapefiles from local sources
 
 ## Prerequisites
 
@@ -23,8 +23,11 @@ GeoIDs.jl requires:
 
 - **PostgreSQL** database server (version 12 or higher)
 - **PostGIS** extension (version 3.0 or higher)
+- **Local TIGER/Line shapefiles** in the GeoIDs.jl/data directory
 
 > **Important**: Before using GeoIDs.jl, follow our [PostgreSQL Setup Guide](guide/postgresql-setup.md) to install and configure these prerequisites.
+
+> **Note**: GeoIDs.jl now uses PostgreSQL's default socket authentication which doesn't require username and password on local development setups.
 
 ## Installation
 
@@ -43,6 +46,8 @@ using GeoIDs
 # Initialize the database (only needed once)
 initialize_database()
 ```
+
+This will automatically use the local TIGER/Line shapefile from the GeoIDs.jl/data directory and initialize the database schema.
 
 ### 2. Create GEOID Sets
 

@@ -17,7 +17,7 @@ This function will:
 
 1. Create the `census` schema if it doesn't exist
 2. Enable the PostGIS extension if needed
-3. Download and extract the U.S. Census TIGER/Line county shapefile (TIGER2023)
+3. Use the local U.S. Census TIGER/Line county shapefile from the GeoIDs.jl/data directory
 4. Create the `census.counties` table
 5. Load county data with GEOIDs and geometries
 
@@ -33,7 +33,7 @@ DB.with_connection() do conn
     # Create the census schema
     setup_census_schema(conn)
     
-    # Download county shapefile (defaults to 2023)
+    # Get the local county shapefile from GeoIDs.jl/data directory
     zip_path = download_county_shapefile("./data")
     
     # Extract the shapefile
@@ -55,14 +55,22 @@ The GeoIDs.jl package requires the following database tables:
 
 Only the `census.counties` table needs to be populated with data from the Census TIGER/Line shapefile.
 
-## Customizing the Import
+## Local Shapefile Usage
 
-You can customize the shapefile download by specifying a different year:
+GeoIDs.jl now uses a local copy of the shapefile from the GeoIDs.jl/data directory instead of downloading it. Make sure the shapefile exists at:
+
+```
+GeoIDs.jl/data/cb_2023_us_county_500k.zip
+```
+
+You can customize the year by specifying a different year parameter:
 
 ```julia
-# Download 2022 county shapefile
+# Use local 2022 county shapefile
 zip_path = download_county_shapefile("./data", 2022)
 ```
+
+In this case, ensure the file exists at `GeoIDs.jl/data/cb_2022_us_county_500k.zip`.
 
 ## Checking the Database
 
@@ -74,14 +82,14 @@ using DataFrames
 
 # Execute a query to check counties table
 DB.with_connection() do conn
-    result = DB.execute_query(conn, "SELECT COUNT(*) FROM census.counties;")
+    result = DB.execute(conn, "SELECT COUNT(*) FROM census.counties;")
     println("Number of counties: $(result[1, 1])")
 end
 ```
 
 ## Creating the Database
 
-The `initialize_database()` function now automatically creates the `tiger` database if it doesn't exist. It performs these steps:
+The `initialize_database()` function automatically creates the `tiger` database if it doesn't exist. It performs these steps:
 
 1. Checks if the database exists
 2. Creates the database if it doesn't exist

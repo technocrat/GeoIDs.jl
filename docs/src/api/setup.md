@@ -25,13 +25,15 @@ setup_census_schema
 
 ## Census Data Management
 
-Functions for downloading and loading Census geographic data:
+Functions for managing Census geographic data:
 
 ```@docs
 download_county_shapefile
 extract_shapefile
 load_counties_to_db
 ```
+
+> **Note**: The `download_county_shapefile` function now uses a local shapefile from the GeoIDs.jl/data directory instead of downloading it from the internet.
 
 ## Module Index
 

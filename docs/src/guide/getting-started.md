@@ -38,6 +38,8 @@ ENV["GEOIDS_DB_PORT"] = "5432"      # Default
 using GeoIDs
 ```
 
+> **Note**: The package now uses PostgreSQL's default socket authentication which doesn't require username and password settings on local development setups.
+
 ## Basic Usage
 
 ### Creating GEOID Sets
