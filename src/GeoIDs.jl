@@ -7,24 +7,32 @@ using LibPQ
 using ArchGDAL
 using JSON3
 using Dates
+using HTTP
+using ZipFile
 
 # Include sub-modules
 include("db.jl")
 include("store.jl")
 include("fetch.jl")
 include("operations.jl")
+include("setup.jl")
+include("predefined_sets.jl") # Include the new predefined sets module
 
 # Import and re-export from sub-modules
 using .DB
 using .Store
 using .Fetch
 using .Operations
+using .Setup
+using .PredefinedSets
 
 # Constants for holding pre-defined GEOID sets that will be loaded from the database
-const WESTERN_GEOIDS = String[]
-const EASTERN_GEOIDS = String[]
-const FLORIDA_SOUTH_GEOIDS = String[] 
-const COLORADO_BASIN_GEOIDS = String[]
+const EASTERN_US_GEOIDS = String[]
+const WESTERN_US_GEOIDS = String[]
+const SOUTH_FLORIDA_GEOIDS = String[] 
+const MIDWEST_GEOIDS = String[]
+const MOUNTAIN_WEST_GEOIDS = String[]
+const GREAT_PLAINS_GEOIDS = String[]
 
 """
     initialize_predefined_geoid_sets()
@@ -37,34 +45,22 @@ function initialize_predefined_geoid_sets()
     # Check if tables exist, create them if not
     DB.setup_tables()
     
-    # Get list of all predefined sets with their generation functions
-    predefined_sets = [
-        ("western_geoids", "Counties west of 100°W longitude requiring irrigation", get_western_geoids),
-        ("eastern_geoids", "Counties between 90°W and 100°W with historically high rainfall", get_eastern_geoids),
-        ("florida_south_geoids", "Florida counties south of 29°N latitude", get_florida_south_geoids),
-        # Add more predefined sets here
-    ]
-    
-    for (set_name, description, generator_func) in predefined_sets
-        # Check if this set already exists in the database
-        try
-            result = list_geoid_sets()
-            if set_name ∉ result.set_name
-                # Set doesn't exist yet, initialize it
-                geoids = generator_func()
+    # Get all available GEOID sets from the database
+    try
+        result = list_geoid_sets()
+        existing_sets = result.set_name
+        
+        # Initialize each predefined set if it doesn't exist
+        for (set_name, (geoids, description)) in PredefinedSets.PREDEFINED_SETS
+            if set_name ∉ existing_sets
                 if !isempty(geoids)
                     create_geoid_set(set_name, description, geoids)
                     @info "Initialized predefined GEOID set: $set_name with $(length(geoids)) counties"
                 end
             end
-        catch e
-            if isa(e, SQLState)
-                # Tables might not exist yet, that's okay
-                @warn "Could not check for existing GEOID sets: $e"
-            else
-                @warn "Error initializing predefined GEOID set $set_name: $e"
-            end
         end
+    catch e
+        @warn "Could not initialize predefined GEOID sets: $e"
     end
 end
 
@@ -74,20 +70,54 @@ end
 Load all predefined GEOID sets from the database into module constants.
 """
 function load_predefined_geoids()
+    # Use individual try/catch blocks for each set to ensure one failure doesn't affect others
+    
+    # Eastern US GEOIDs
     try
-        # Load predefined GEOID sets into constants
-        empty!(WESTERN_GEOIDS)
-        append!(WESTERN_GEOIDS, get_geoid_set("western_geoids"))
-        
-        empty!(EASTERN_GEOIDS)
-        append!(EASTERN_GEOIDS, get_geoid_set("eastern_geoids"))
-        
-        empty!(FLORIDA_SOUTH_GEOIDS)
-        append!(FLORIDA_SOUTH_GEOIDS, get_geoid_set("florida_south_geoids"))
-        
-        # Add more predefined sets here
+        empty!(EASTERN_US_GEOIDS)
+        append!(EASTERN_US_GEOIDS, get_geoid_set("eastern_us"))
     catch e
-        @warn "Error loading predefined GEOID sets: $e"
+        @info "Could not load 'eastern_us' set: $(typeof(e))"
+    end
+    
+    # Western US GEOIDs
+    try
+        empty!(WESTERN_US_GEOIDS)
+        append!(WESTERN_US_GEOIDS, get_geoid_set("western_us"))
+    catch e
+        @info "Could not load 'western_us' set: $(typeof(e))"
+    end
+    
+    # South Florida GEOIDs
+    try
+        empty!(SOUTH_FLORIDA_GEOIDS)
+        append!(SOUTH_FLORIDA_GEOIDS, get_geoid_set("south_florida"))
+    catch e
+        @info "Could not load 'south_florida' set: $(typeof(e))"
+    end
+    
+    # Midwest GEOIDs
+    try
+        empty!(MIDWEST_GEOIDS)
+        append!(MIDWEST_GEOIDS, get_geoid_set("midwest"))
+    catch e
+        @info "Could not load 'midwest' set: $(typeof(e))"
+    end
+    
+    # Mountain West GEOIDs
+    try
+        empty!(MOUNTAIN_WEST_GEOIDS)
+        append!(MOUNTAIN_WEST_GEOIDS, get_geoid_set("mountain_west"))
+    catch e
+        @info "Could not load 'mountain_west' set: $(typeof(e))"
+    end
+    
+    # Great Plains GEOIDs
+    try
+        empty!(GREAT_PLAINS_GEOIDS)
+        append!(GREAT_PLAINS_GEOIDS, get_geoid_set("great_plains"))
+    catch e
+        @info "Could not load 'great_plains' set: $(typeof(e))"
     end
 end
 
@@ -204,7 +234,7 @@ function restore_geoid_sets(input_file::String, overwrite::Bool=false)
                     """
                     
                     check_result = DB.execute(conn, check_query, [set["set_name"], set["version"]])
-                    if parse(Int, LibPQ.getvalue(check_result, 1, 1)) > 0
+                    if convert(Int, check_result[1, 1]) > 0
                         continue  # Skip existing
                     end
                 end
@@ -274,6 +304,9 @@ end
 function __init__()
     # Setup database tables if they don't exist
     try
+        # Ensure database exists and is properly initialized with data
+        initialize_database()
+        
         # Initialize predefined GEOID sets in the database
         initialize_predefined_geoid_sets()
         
@@ -287,9 +320,23 @@ end
 # Export functions from main module
 export backup_geoid_sets,
        restore_geoid_sets,
-       WESTERN_GEOIDS,
-       EASTERN_GEOIDS,
-       FLORIDA_SOUTH_GEOIDS,
-       COLORADO_BASIN_GEOIDS
+       EASTERN_US_GEOIDS,
+       WESTERN_US_GEOIDS,
+       SOUTH_FLORIDA_GEOIDS,
+       MIDWEST_GEOIDS,
+       MOUNTAIN_WEST_GEOIDS,
+       GREAT_PLAINS_GEOIDS,
+       # Export Setup module functions
+       setup_census_schema,
+       download_county_shapefile,
+       load_counties_to_db,
+       initialize_database,
+       # Re-export predefined sets constants
+       EASTERN_US_COUNTIES,
+       WESTERN_US_COUNTIES,
+       SOUTH_FLORIDA_COUNTIES,
+       MIDWEST_COUNTIES,
+       MOUNTAIN_WEST_COUNTIES,
+       GREAT_PLAINS_COUNTIES
 
 end # module GeoIDs 

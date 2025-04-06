@@ -8,14 +8,23 @@ A Julia package for managing, storing, and manipulating geographic GEOID sets wi
 
 ## Overview
 
-GeoIDs.jl provides a comprehensive solution for working with Census GEOID identifiers, particularly at the county level. The package offers:
+GeoIDs.jl provides a comprehensive solution for working with Census GEOID identifiers, particularly at the county level. The package enables you to:
 
-- **Versioned GEOID Sets**: Store and manage GEOID sets with complete version history
-- **Database Integration**: Persistent storage in PostgreSQL
-- **Set Operations**: Union, intersection, difference, and symmetric difference operations
-- **Spatial Filtering**: Generate GEOIDs based on spatial criteria (longitude, latitude, distance, etc.)
-- **Backup/Restore**: Export and import GEOID sets with complete version history
-- **Nation State Integration**: Connect with nation state definitions in the Census package
+- **Create and Manage Geographic Area Sets**: Define sets of counties for analysis
+- **Track Changes Over Time**: Full version history for every geographic definition
+- **Apply Set Operations**: Union, intersection, difference, and symmetric difference
+- **Filter Spatially**: Select counties by latitude, longitude, distance, or bounding box
+- **Back Up and Restore**: Export and import full version history
+- **Access Census Data**: Integrate with TIGER/Line shapefiles
+
+## Prerequisites
+
+GeoIDs.jl requires:
+
+- **PostgreSQL** database server (version 12 or higher)
+- **PostGIS** extension (version 3.0 or higher)
+
+> **Important**: Before using GeoIDs.jl, follow our [PostgreSQL Setup Guide](guide/postgresql-setup.md) to install and configure these prerequisites.
 
 ## Installation
 
@@ -26,44 +35,88 @@ Pkg.add(url="https://github.com/technocrat/GeoIDs.jl.git")
 
 ## Quick Start
 
+### 1. Set Up the Database
+
 ```julia
 using GeoIDs
 
-# Create a new GEOID set with Florida counties
+# Initialize the database (only needed once)
+initialize_database()
+```
+
+### 2. Create GEOID Sets
+
+```julia
+# Get all Florida counties
 florida_counties = get_geoids_by_state("FL")
 create_geoid_set("florida_counties", "All counties in Florida", florida_counties)
 
-# Get southern Florida counties
+# Filter for southern Florida counties
 south_fl = get_geoids_by_spatial_filter(:latitude, Dict(
     "min_lat" => 25.0,
     "max_lat" => 27.0
 ))
 create_geoid_set("south_florida", "Southern Florida counties", south_fl)
-
-# List all GEOID sets
-sets = list_geoid_sets()
 ```
 
-## Manual Outline
+### 3. Perform Set Operations
+
+```julia
+# Get counties in Florida but not in South Florida
+central_fl = difference_geoid_sets(
+    "florida_counties", 
+    "south_florida", 
+    "central_florida"
+)
+
+# Get coastal counties in Florida
+coastal_fl = intersect_geoid_sets(
+    ["florida_counties", "coastal_counties"],
+    "florida_coastal"
+)
+```
+
+### 4. List and Manage Sets
+
+```julia
+# List all available GEOID sets
+sets = list_geoid_sets()
+
+# View version history of a set
+versions = list_geoid_set_versions("south_florida")
+
+# Add a county to a set
+new_version = add_to_geoid_set("south_florida", ["12021"])  # Add Collier County
+
+# Revert to a previous version
+rollback_geoid_set("south_florida", 1)
+```
+
+## Documentation
+
+### User Guides
 
 ```@contents
 Pages = [
+    "guide/postgresql-setup.md",
+    "guide/database-config.md",
+    "guide/database-setup.md",
     "guide/getting-started.md",
     "guide/geoid-sets.md",
     "guide/spatial-filtering.md",
     "guide/set-operations.md",
     "guide/versioning.md",
-    "guide/database-config.md",
 ]
 Depth = 2
 ```
 
-## API Reference
+### API Reference
 
 ```@contents
 Pages = [
     "api/core.md",
     "api/db.md",
+    "api/setup.md",
     "api/store.md",
     "api/fetch.md",
     "api/operations.md",

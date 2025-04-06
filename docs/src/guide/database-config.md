@@ -2,13 +2,15 @@
 
 GeoIDs.jl uses PostgreSQL with the PostGIS extension to store and manage GEOID sets. The package provides flexible configuration options through environment variables.
 
+> **Note**: If you need to install and set up PostgreSQL first, see our [PostgreSQL Setup Guide](postgresql-setup.md).
+
 ## Environment Variables
 
 You can customize the database connection using these environment variables:
 
 | Environment Variable | Description | Default Value |
 |---------------------|-------------|---------------|
-| `GEOIDS_DB_NAME` | Database name | `geocoder` |
+| `GEOIDS_DB_NAME` | Database name | `tiger` |
 | `GEOIDS_DB_HOST` | Database host | `localhost` |
 | `GEOIDS_DB_PORT` | Database port | `5432` |
 | `GEOIDS_DB_USER` | Database user | Current system user |
@@ -60,11 +62,18 @@ GeoIDs.jl requires these database tables:
 3. `census.geoid_set_members` - Table for GEOID set members (created automatically)
 4. `census.geoid_set_changes` - Table for tracking changes (created automatically)
 
-Tables 2-4 are created automatically when needed through the `setup_tables()` function.
+All required tables are created automatically when you run the `initialize_database()` function. This function:
+
+1. Creates the `census` schema if it doesn't exist
+2. Enables the PostGIS extension if needed
+3. Downloads and extracts the U.S. Census TIGER/Line county shapefile
+4. Creates the `census.counties` table with proper schema
+5. Loads county data with GEOIDs and geometries
+6. Sets up the GEOID set management tables
 
 ### Required Schema
 
-The `census.counties` table must exist and have the following schema:
+The `census.counties` table must have the following schema:
 
 ```sql
 CREATE TABLE census.counties (
@@ -76,4 +85,4 @@ CREATE TABLE census.counties (
 );
 ```
 
-This table is typically created as part of the Census.jl package setup. 
+This table is automatically created and populated when you run `initialize_database()`. 

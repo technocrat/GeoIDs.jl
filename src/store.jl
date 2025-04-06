@@ -50,7 +50,7 @@ function create_geoid_set_version(set_name::String, geoids::Vector{String},
             
             current_version_result = execute(conn, current_version_query, [set_name])
             
-            if LibPQ.ntuples(current_version_result) == 0
+            if LibPQ.num_rows(current_version_result) == 0
                 # Set doesn't exist yet, create version 1
                 new_version = 1
                 set_description = description
@@ -70,8 +70,8 @@ function create_geoid_set_version(set_name::String, geoids::Vector{String},
                 
             else
                 # Get details of existing version
-                existing_version = parse(Int, LibPQ.getvalue(current_version_result, 1, 1))
-                existing_description = LibPQ.getvalue(current_version_result, 1, 2)
+                existing_version = convert(Int, current_version_result[1, 1])
+                existing_description = current_version_result[1, 2]
                 
                 # Determine base version
                 base_ver = base_version > 0 ? base_version : existing_version
@@ -94,8 +94,8 @@ function create_geoid_set_version(set_name::String, geoids::Vector{String},
                 """
                 
                 existing_geoids_result = execute(conn, existing_geoids_query, [set_name, base_ver])
-                existing_geoids = [LibPQ.getvalue(existing_geoids_result, i, 1) 
-                                  for i in 1:LibPQ.ntuples(existing_geoids_result)]
+                existing_geoids = [existing_geoids_result[i, 1] 
+                                  for i in 1:LibPQ.num_rows(existing_geoids_result)]
                 
                 # Calculate new version and changes
                 new_version = existing_version + 1
@@ -194,7 +194,7 @@ function get_geoid_set_version(set_name::String, version::Int=0)
         ver_params = version == 0 ? [set_name] : [set_name, version]
         ver_result = execute(conn, ver_query, ver_params)
         
-        if LibPQ.ntuples(ver_result) == 0
+        if LibPQ.num_rows(ver_result) == 0
             if version == 0
                 error("GEOID set '$set_name' not found")
             else
@@ -202,7 +202,7 @@ function get_geoid_set_version(set_name::String, version::Int=0)
             end
         end
         
-        actual_version = parse(Int, LibPQ.getvalue(ver_result, 1, 1))
+        actual_version = convert(Int, ver_result[1, 1])
         
         # Get GEOIDs for this version
         geoids_query = """
@@ -213,8 +213,8 @@ function get_geoid_set_version(set_name::String, version::Int=0)
         
         geoids_result = execute(conn, geoids_query, [set_name, actual_version])
         
-        geoids = [LibPQ.getvalue(geoids_result, i, 1) 
-                 for i in 1:LibPQ.ntuples(geoids_result)]
+        geoids = [geoids_result[i, 1] 
+                 for i in 1:LibPQ.num_rows(geoids_result)]
         
         return geoids
     end

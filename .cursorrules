@@ -1,0 +1,79 @@
+{
+  "name": "Cursor Project Rules",
+  "version": "1.0.0",
+  "description": "Project-wide rules and guidelines for Cursor development",
+  "project": {
+    "name": "GeoIDS",
+    "description": "Julia Package for downloading and processing US Census TIGER/Line shapefiles",
+    "aspects": [
+      "GIS",
+      "Census"
+    ],
+    "output": "Julia Package",
+    "database": "PostgreSQL"
+  },
+  "development": {
+    "codeStyle": "functional",
+    "includeTesting": true,
+    "includeDocumentation": true,
+    "suggestRefactoring": true,
+    "maxTokens": 16000
+  },
+  "database": {
+    "host": "localhost",
+    "port": 5432,
+    "database": "tiger"
+  },
+  "mcp": {
+    "rules": [
+      "Explore thoroughly: Avoid rushing to conclusions and keep investigating until a natural solution emerges",
+      "Think deeply: Engage in extensive contemplation, breaking complex thoughts into simple steps",
+      "Express naturally: Use conversational internal monologue with short, simple sentences that mirror natural thought patterns",
+      "Embrace uncertainty: Acknowledge doubts, revise previous thoughts, and explore multiple possibilities",
+      "Show your work: Demonstrate work-in-progress thinking, including dead ends and backtracking",
+      "Persist and review: Value thorough exploration over quick resolution, and implement multi-stage reviews for all solutions",
+      "Ensure compatibility: When changing patterns or functions, update associated files to maintain consistency",
+      "Learn and improve: Monitor solution effectiveness, identify patterns, and create new rules based on insights",
+      "Manage memory: Start tasks by retrieving relevant information and update the knowledge base after each task",
+      "Seek feedback: Evaluate solutions against quality criteria and iterate based on user or expert input"
+    ],
+    "messageSteps": [
+      "Read/Update MCP Memory",
+      "Update MCP Memory with what was learned during learning phase",
+      "Update MCP Memory with any changes made"
+    ],
+    "conversationHistory": {
+      "location": "/.specstory/history/",
+      "enabled": true
+    },
+    "goals": [
+      "Reach conclusions through thorough exploration",
+      "Let conclusions emerge naturally from exhaustive contemplation",
+      "Confidently state impossibility when tasks cannot be completed",
+      "Strive for continuous improvement through self-learning",
+      "Maintain rigorous review processes",
+      "Practice effective memory management"
+    ]
+  },
+  "user": {
+    "background": "Lawyer with 45 years of programming experience",
+    "languages": [
+      "FORTRAN",
+      "BASIC",
+      "Pascal",
+      "C",
+      "Perl",
+      "Ruby",
+      "Python",
+      "R",
+      "Go",
+      "Rust",
+      "Haskell",
+      "SQL",
+      "bash"
+    ],
+    "expertise": "R programming",
+    "current": "Learning Julia with good grasp of basics",
+    "preferences": "Functional programming approach and UNIX philosophy"
+  }
+}

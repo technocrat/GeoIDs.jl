@@ -29,7 +29,8 @@ function get_geoids_by_state(state::String)
     """
     
     result = execute_query(query, [state])
-    return result.geoid
+    # Convert to Vector{String} to ensure type stability
+    return String.(collect(skipmissing(result.geoid)))
 end
 
 """
@@ -56,7 +57,8 @@ function get_geoids_by_states(states::Vector{String})
     """
     
     result = execute_query(query, [states])
-    return result.geoid
+    # Convert to Vector{String} to ensure type stability
+    return String.(collect(skipmissing(result.geoid)))
 end
 
 """
@@ -86,7 +88,7 @@ function get_geoids_by_county_names(state::String, counties::Vector{String})
     """
     
     result = execute_query(query, [state, counties...])
-    return result.geoid
+    return String.(collect(skipmissing(result.geoid)))
 end
 
 """
@@ -152,7 +154,7 @@ function get_geoids_by_spatial_filter(filter_type::Symbol, parameters::Dict)
     
     # Execute the query
     result = execute_query(query, params)
-    return result.geoid
+    return String.(collect(skipmissing(result.geoid)))
 end
 
 """
@@ -194,7 +196,7 @@ function get_florida_south_geoids()
     """
     
     result = execute_query(query)
-    return result.geoid
+    return String.(collect(skipmissing(result.geoid)))
 end
 
 """
@@ -221,7 +223,7 @@ function get_nation_state_geoids(nation_state::String)
     """
     
     result = execute_query(query, [nation_state])
-    return result.geoid
+    return String.(collect(skipmissing(result.geoid)))
 end
 
 """
@@ -285,7 +287,7 @@ function get_geoids_by_population_range(min_pop::Int, max_pop::Int)
     """
     
     result = execute_query(query, [min_pop, max_pop])
-    return result.geoid
+    return String.(collect(skipmissing(result.geoid)))
 end
 
 """
@@ -315,7 +317,7 @@ function get_geoids_by_custom_query(query::String, params::Vector=[])
         error("Custom query must return a 'geoid' column")
     end
     
-    return result.geoid
+    return String.(collect(skipmissing(result.geoid)))
 end
 
 # Export functions

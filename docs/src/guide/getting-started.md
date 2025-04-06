@@ -11,16 +11,26 @@ Pkg.add(url="https://github.com/technocrat/GeoIDs.jl.git")
 
 ## Setup
 
-Before using GeoIDs.jl, you need to ensure you have:
+Before using GeoIDs.jl, you need to:
 
-1. A PostgreSQL database with PostGIS extension
-2. The `census.counties` table with county GEOIDs and geometries
+1. **Set up PostgreSQL with PostGIS** - Follow our [PostgreSQL Setup Guide](./postgresql-setup.md)
+2. **Configure database connection** - See [Database Configuration](./database-config.md)
+3. **Initialize the database schema** - Use [Database Setup](./database-setup.md) instructions
+
+For quick setup with default settings, run:
+
+```julia
+using GeoIDs
+
+# Initialize the database with default settings
+initialize_database()
+```
 
 You can configure the database connection using environment variables:
 
 ```julia
 # Set database connection parameters
-ENV["GEOIDS_DB_NAME"] = "geocoder"  # Default
+ENV["GEOIDS_DB_NAME"] = "tiger"     # Default
 ENV["GEOIDS_DB_HOST"] = "localhost" # Default
 ENV["GEOIDS_DB_PORT"] = "5432"      # Default
 
@@ -115,8 +125,12 @@ rollback_geoid_set("south_florida", 1)
 
 ## Next Steps
 
-- Learn about [GEOID Sets](./geoid-sets.md) in detail
-- Explore advanced [Spatial Filtering](./spatial-filtering.md) capabilities
-- Understand [Set Operations](./set-operations.md) for combining and manipulating GEOID sets
-- Discover [Versioning](./versioning.md) features for tracking changes
-- Configure database connections with [Database Configuration](./database-config.md) 
+For more details on using GeoIDs.jl, explore these guides:
+
+- [PostgreSQL Setup](./postgresql-setup.md) - Installing and configuring PostgreSQL with PostGIS
+- [Database Configuration](./database-config.md) - Configuring database connection settings
+- [Database Setup](./database-setup.md) - Initializing the database schema and county data
+- [GEOID Sets](./geoid-sets.md) - Working with GEOID sets in detail
+- [Spatial Filtering](./spatial-filtering.md) - Advanced spatial querying capabilities
+- [Set Operations](./set-operations.md) - Combining and manipulating GEOID sets
+- [Versioning](./versioning.md) - Tracking changes to GEOID sets over time 

@@ -9,6 +9,18 @@ deps/deps.jl
 docs/build/
 docs/site/
 
+# Data directory containing shapefile downloads
+data/
+*.zip
+*.shp
+*.shx
+*.dbf
+*.prj
+*.sbn
+*.sbx
+*.cpg
+*.xml
+
 # Backup files
 *~
 .#*

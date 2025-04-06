@@ -13,12 +13,14 @@ makedocs(
     pages = [
         "Home" => "index.md",
         "User Guide" => [
+            "PostgreSQL Setup" => "guide/postgresql-setup.md",
+            "Database Configuration" => "guide/database-config.md",
+            "Database Setup" => "guide/database-setup.md",
             "Getting Started" => "guide/getting-started.md",
             "GEOID Sets" => "guide/geoid-sets.md",
             "Spatial Filtering" => "guide/spatial-filtering.md",
             "Set Operations" => "guide/set-operations.md",
             "Versioning" => "guide/versioning.md",
-            "Database Configuration" => "guide/database-config.md",
         ],
         "API Reference" => [
             "Core" => "api/core.md",
@@ -26,6 +28,7 @@ makedocs(
             "Store" => "api/store.md",
             "Fetch" => "api/fetch.md",
             "Operations" => "api/operations.md",
+            "Setup" => "api/setup.md",
         ],
         "Contributing" => "contributing.md",
     ],
