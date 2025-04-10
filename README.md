@@ -91,6 +91,40 @@ DB.with_connection() do conn
 end
 ```
 
+### Populating Predefined GEOID Sets
+
+The package includes a script to populate the database with predefined GEOID sets:
+
+```bash
+# Navigate to the package directory
+cd ~/.julia/packages/GeoIDs/[version]/scripts
+
+# Run the script
+./populate-geoids
+
+# With verbose output
+./populate-geoids --verbose
+
+# Force recreation of existing sets
+./populate-geoids --force
+```
+
+Alternatively, you can run the Julia script directly:
+
+```bash
+julia ~/.julia/packages/GeoIDs/[version]/scripts/populate_geoids.jl
+```
+
+The predefined sets include:
+- Eastern/Western US counties
+- South Florida counties
+- Midwest counties
+- Mountain West counties
+- Great Plains counties
+- Colorado Basin counties
+- Counties east/west of the 100th meridian
+- And more
+
 ## Basic Usage
 
 ```julia

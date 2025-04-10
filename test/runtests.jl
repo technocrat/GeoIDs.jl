@@ -203,9 +203,9 @@ test_predefined_sets = Dict(
         @test length(test_florida_counties) > 0
         
         # Test database-loaded constants are defined - these should always exist in the module
-        @test isa(GeoIDs.EASTERN_US_GEOIDS, Vector{String})
-        @test isa(GeoIDs.WESTERN_US_GEOIDS, Vector{String})
-        @test isa(GeoIDs.SOUTH_FLORIDA_GEOIDS, Vector{String})
+        @test isa(GeoIDs.EASTERN_US_GEOIDS_DB, Vector{String})
+        @test isa(GeoIDs.WESTERN_US_GEOIDS_DB, Vector{String})
+        @test isa(GeoIDs.SOUTH_FLORIDA_GEOIDS_DB, Vector{String})
         
         # Test Florida south geoid constants - use our test constants
         @test "12086" in test_florida_counties  # Miami-Dade

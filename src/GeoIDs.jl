@@ -17,6 +17,7 @@ include("fetch.jl")
 include("operations.jl")
 include("setup.jl")
 include("predefined_sets.jl") # Include the new predefined sets module
+include("list_all_geoids.jl") # Include the list_all_geoids function
 
 # Import and re-export from sub-modules
 using .DB
@@ -25,14 +26,25 @@ using .Fetch
 using .Operations
 using .Setup
 using .PredefinedSets
+using .ListGeoids
 
 # Constants for holding pre-defined GEOID sets that will be loaded from the database
-const EASTERN_US_GEOIDS = String[]
-const WESTERN_US_GEOIDS = String[]
-const SOUTH_FLORIDA_GEOIDS = String[] 
-const MIDWEST_GEOIDS = String[]
-const MOUNTAIN_WEST_GEOIDS = String[]
-const GREAT_PLAINS_GEOIDS = String[]
+const EASTERN_US_GEOIDS_DB = String[]
+const WESTERN_US_GEOIDS_DB = String[]
+const SOUTH_FLORIDA_GEOIDS_DB = String[] 
+const MIDWEST_GEOIDS_DB = String[]
+const MOUNTAIN_WEST_GEOIDS_DB = String[]
+const GREAT_PLAINS_GEOIDS_DB = String[]
+const EAST_OF_SIERRAS_GEOIDS_DB = String[]
+const FLORIDA_GEOIDS_DB = String[]
+const COLORADO_BASIN_GEOIDS_DB = String[]
+const WEST_OF_100TH_GEOIDS_DB = String[]
+const EAST_OF_100TH_GEOIDS_DB = String[]
+const MICHIGAN_UPPER_PENINSULA_GEOIDS_DB = String[]
+const NORTHERN_RURAL_CALIFORNIA_GEOIDS_DB = String[]
+const SOCAL_GEOIDS_DB = String[]
+const MISSOURI_RIVER_BASIN_DB = String[]
+const EAST_OF_CASCADES_DB = String[]
 
 """
     initialize_predefined_geoid_sets()
@@ -74,50 +86,130 @@ function load_predefined_geoids()
     
     # Eastern US GEOIDs
     try
-        empty!(EASTERN_US_GEOIDS)
-        append!(EASTERN_US_GEOIDS, get_geoid_set("eastern_us"))
+        empty!(EASTERN_US_GEOIDS_DB)
+        append!(EASTERN_US_GEOIDS_DB, get_geoid_set("eastern_us"))
     catch e
         @info "Could not load 'eastern_us' set: $(typeof(e))"
     end
     
     # Western US GEOIDs
     try
-        empty!(WESTERN_US_GEOIDS)
-        append!(WESTERN_US_GEOIDS, get_geoid_set("western_us"))
+        empty!(WESTERN_US_GEOIDS_DB)
+        append!(WESTERN_US_GEOIDS_DB, get_geoid_set("western_us"))
     catch e
         @info "Could not load 'western_us' set: $(typeof(e))"
     end
     
     # South Florida GEOIDs
     try
-        empty!(SOUTH_FLORIDA_GEOIDS)
-        append!(SOUTH_FLORIDA_GEOIDS, get_geoid_set("south_florida"))
+        empty!(SOUTH_FLORIDA_GEOIDS_DB)
+        append!(SOUTH_FLORIDA_GEOIDS_DB, get_geoid_set("south_florida"))
     catch e
         @info "Could not load 'south_florida' set: $(typeof(e))"
     end
     
     # Midwest GEOIDs
     try
-        empty!(MIDWEST_GEOIDS)
-        append!(MIDWEST_GEOIDS, get_geoid_set("midwest"))
+        empty!(MIDWEST_GEOIDS_DB)
+        append!(MIDWEST_GEOIDS_DB, get_geoid_set("midwest"))
     catch e
         @info "Could not load 'midwest' set: $(typeof(e))"
     end
     
     # Mountain West GEOIDs
     try
-        empty!(MOUNTAIN_WEST_GEOIDS)
-        append!(MOUNTAIN_WEST_GEOIDS, get_geoid_set("mountain_west"))
+        empty!(MOUNTAIN_WEST_GEOIDS_DB)
+        append!(MOUNTAIN_WEST_GEOIDS_DB, get_geoid_set("mountain_west"))
     catch e
         @info "Could not load 'mountain_west' set: $(typeof(e))"
     end
     
     # Great Plains GEOIDs
     try
-        empty!(GREAT_PLAINS_GEOIDS)
-        append!(GREAT_PLAINS_GEOIDS, get_geoid_set("great_plains"))
+        empty!(GREAT_PLAINS_GEOIDS_DB)
+        append!(GREAT_PLAINS_GEOIDS_DB, get_geoid_set("great_plains"))
     catch e
         @info "Could not load 'great_plains' set: $(typeof(e))"
+    end
+    
+    # East of Sierras GEOIDs
+    try
+        empty!(EAST_OF_SIERRAS_GEOIDS_DB)
+        append!(EAST_OF_SIERRAS_GEOIDS_DB, get_geoid_set("east_of_sierras"))
+    catch e
+        @info "Could not load 'east_of_sierras' set: $(typeof(e))"
+    end
+    
+    # Florida GEOIDs
+    try
+        empty!(FLORIDA_GEOIDS_DB)
+        append!(FLORIDA_GEOIDS_DB, get_geoid_set("florida"))
+    catch e
+        @info "Could not load 'florida' set: $(typeof(e))"
+    end
+    
+    # Colorado Basin GEOIDs
+    try
+        empty!(COLORADO_BASIN_GEOIDS_DB)
+        append!(COLORADO_BASIN_GEOIDS_DB, get_geoid_set("colorado_basin"))
+    catch e
+        @info "Could not load 'colorado_basin' set: $(typeof(e))"
+    end
+    
+    # West of 100th Meridian GEOIDs
+    try
+        empty!(WEST_OF_100TH_GEOIDS_DB)
+        append!(WEST_OF_100TH_GEOIDS_DB, get_geoid_set("west_of_100th"))
+    catch e
+        @info "Could not load 'west_of_100th' set: $(typeof(e))"
+    end
+    
+    # East of 100th Meridian GEOIDs
+    try
+        empty!(EAST_OF_100TH_GEOIDS_DB)
+        append!(EAST_OF_100TH_GEOIDS_DB, get_geoid_set("east_of_100th"))
+    catch e
+        @info "Could not load 'east_of_100th' set: $(typeof(e))"
+    end
+    
+    # Michigan Upper Peninsula GEOIDs
+    try
+        empty!(MICHIGAN_UPPER_PENINSULA_GEOIDS_DB)
+        append!(MICHIGAN_UPPER_PENINSULA_GEOIDS_DB, get_geoid_set("michigan_upper_peninsula"))
+    catch e
+        @info "Could not load 'michigan_upper_peninsula' set: $(typeof(e))"
+    end
+    
+    # Northern Rural California GEOIDs
+    try
+        empty!(NORTHERN_RURAL_CALIFORNIA_GEOIDS_DB)
+        append!(NORTHERN_RURAL_CALIFORNIA_GEOIDS_DB, get_geoid_set("northern_rural_california"))
+    catch e
+        @info "Could not load 'northern_rural_california' set: $(typeof(e))"
+    end
+    
+    # Southern California GEOIDs
+    try
+        empty!(SOCAL_GEOIDS_DB)
+        append!(SOCAL_GEOIDS_DB, get_geoid_set("socal"))
+    catch e
+        @info "Could not load 'socal' set: $(typeof(e))"
+    end
+    
+    # Missouri River Basin GEOIDs
+    try
+        empty!(MISSOURI_RIVER_BASIN_DB)
+        append!(MISSOURI_RIVER_BASIN_DB, get_geoid_set("missouri_river_basin"))
+    catch e
+        @info "Could not load 'missouri_river_basin' set: $(typeof(e))"
+    end
+    
+    # East of Cascades GEOIDs
+    try
+        empty!(EAST_OF_CASCADES_DB)
+        append!(EAST_OF_CASCADES_DB, get_geoid_set("east_of_cascades"))
+    catch e
+        @info "Could not load 'east_of_cascades' set: $(typeof(e))"
     end
 end
 
@@ -320,23 +412,31 @@ end
 # Export functions from main module
 export backup_geoid_sets,
        restore_geoid_sets,
-       EASTERN_US_GEOIDS,
-       WESTERN_US_GEOIDS,
-       SOUTH_FLORIDA_GEOIDS,
-       MIDWEST_GEOIDS,
-       MOUNTAIN_WEST_GEOIDS,
-       GREAT_PLAINS_GEOIDS,
+       EASTERN_US_GEOIDS_DB,
+       WESTERN_US_GEOIDS_DB,
+       SOUTH_FLORIDA_GEOIDS_DB,
+       MIDWEST_GEOIDS_DB,
+       MOUNTAIN_WEST_GEOIDS_DB,
+       GREAT_PLAINS_GEOIDS_DB,
+       EAST_OF_SIERRAS_GEOIDS_DB,
+       FLORIDA_GEOIDS_DB,
+       COLORADO_BASIN_GEOIDS_DB,
+       WEST_OF_100TH_GEOIDS_DB,
+       EAST_OF_100TH_GEOIDS_DB,
+       MICHIGAN_UPPER_PENINSULA_GEOIDS_DB,
+       NORTHERN_RURAL_CALIFORNIA_GEOIDS_DB,
+       SOCAL_GEOIDS_DB,
+       MISSOURI_RIVER_BASIN_DB,
+       EAST_OF_CASCADES_DB,
        # Export Setup module functions
        setup_census_schema,
        download_county_shapefile,
        load_counties_to_db,
        initialize_database,
-       # Re-export predefined sets constants
-       EASTERN_US_COUNTIES,
-       WESTERN_US_COUNTIES,
-       SOUTH_FLORIDA_COUNTIES,
-       MIDWEST_COUNTIES,
-       MOUNTAIN_WEST_COUNTIES,
-       GREAT_PLAINS_COUNTIES
+       # Export utility functions
+       list_all_geoids,
+       which_sets,
+       create_predefined_set,
+       create_all_predefined_sets
 
 end # module GeoIDs 

@@ -164,8 +164,13 @@ function execute_query(query::String, params::Vector=[])
             result = execute(conn, query, params)
             if LibPQ.num_rows(result) == 0
                 # Return empty DataFrame but with correct column structure
-                col_names = [Symbol(name) for name in result.column_names]
-                return DataFrame([[] for _ in col_names], col_names)
+                if !isempty(result.column_names)
+                    col_names = [Symbol(name) for name in result.column_names]
+                    return DataFrame([[] for _ in 1:length(col_names)], col_names)
+                else
+                    # No column information available, return completely empty DataFrame
+                    return DataFrame()
+                end
             end
             return DataFrame(result)
         end
