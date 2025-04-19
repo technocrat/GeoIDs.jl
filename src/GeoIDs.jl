@@ -28,7 +28,7 @@ using .Setup
 using .PredefinedSets
 using .ListGeoids
 
-Constants for holding pre-defined GEOID sets that will be loaded from the database
+# Constants for holding pre-defined GEOID sets that will be loaded from the database
 const EASTERN_US_GEOIDS_DB = String[]
 const WESTERN_US_GEOIDS_DB = String[]
 const SOUTH_FLORIDA_GEOIDS_DB = String[] 
