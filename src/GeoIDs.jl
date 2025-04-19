@@ -16,7 +16,7 @@ include("store.jl")
 include("fetch.jl")
 include("operations.jl")
 include("setup.jl")
-include("predefined_sets.jl") # Include the new predefined sets module
+#include("predefined_sets.jl") # Include the new predefined sets module
 include("list_all_geoids.jl") # Include the list_all_geoids function
 
 # Import and re-export from sub-modules
@@ -28,7 +28,7 @@ using .Setup
 using .PredefinedSets
 using .ListGeoids
 
-# Constants for holding pre-defined GEOID sets that will be loaded from the database
+Constants for holding pre-defined GEOID sets that will be loaded from the database
 const EASTERN_US_GEOIDS_DB = String[]
 const WESTERN_US_GEOIDS_DB = String[]
 const SOUTH_FLORIDA_GEOIDS_DB = String[] 
@@ -393,50 +393,50 @@ function restore_geoid_sets(input_file::String, overwrite::Bool=false)
 end
 
 # Initialize the module
-function __init__()
-    # Setup database tables if they don't exist
-    try
-        # Ensure database exists and is properly initialized with data
-        initialize_database()
-        
-        # Initialize predefined GEOID sets in the database
-        initialize_predefined_geoid_sets()
-        
-        # Load constants from the database
-        load_predefined_geoids()
-    catch e
-        @warn "Error during GeoIDs initialization: $e"
-    end
-end
+# function __init__()
+#     # Setup database tables if they don't exist
+#     try
+#         # Ensure database exists and is properly initialized with data
+#         initialize_database()
+#         
+#         # Initialize predefined GEOID sets in the database
+#         initialize_predefined_geoid_sets()
+#         
+#         # Load constants from the database
+#         load_predefined_geoids()
+#     catch e
+#         @warn "Error during GeoIDs initialization: $e"
+#     end
+# end
 
 # Export functions from main module
-export backup_geoid_sets,
+# export backup_geoid_sets,
        restore_geoid_sets,
-       EASTERN_US_GEOIDS_DB,
-       WESTERN_US_GEOIDS_DB,
-       SOUTH_FLORIDA_GEOIDS_DB,
-       MIDWEST_GEOIDS_DB,
-       MOUNTAIN_WEST_GEOIDS_DB,
-       GREAT_PLAINS_GEOIDS_DB,
-       EAST_OF_SIERRAS_GEOIDS_DB,
-       FLORIDA_GEOIDS_DB,
-       COLORADO_BASIN_GEOIDS_DB,
-       WEST_OF_100TH_GEOIDS_DB,
-       EAST_OF_100TH_GEOIDS_DB,
-       MICHIGAN_UPPER_PENINSULA_GEOIDS_DB,
-       NORTHERN_RURAL_CALIFORNIA_GEOIDS_DB,
-       SOCAL_GEOIDS_DB,
-       MISSOURI_RIVER_BASIN_DB,
-       EAST_OF_CASCADES_DB,
+#        EASTERN_US_GEOIDS_DB,
+#        WESTERN_US_GEOIDS_DB,
+#        SOUTH_FLORIDA_GEOIDS_DB,
+#        MIDWEST_GEOIDS_DB,
+#        MOUNTAIN_WEST_GEOIDS_DB,
+#        GREAT_PLAINS_GEOIDS_DB,
+#        EAST_OF_SIERRAS_GEOIDS_DB,
+#        FLORIDA_GEOIDS_DB,
+#        COLORADO_BASIN_GEOIDS_DB,
+#        WEST_OF_100TH_GEOIDS_DB,
+#        EAST_OF_100TH_GEOIDS_DB,
+#        MICHIGAN_UPPER_PENINSULA_GEOIDS_DB,
+#        NORTHERN_RURAL_CALIFORNIA_GEOIDS_DB,
+#        SOCAL_GEOIDS_DB,
+#        MISSOURI_RIVER_BASIN_DB,
+#        EAST_OF_CASCADES_DB,
        # Export Setup module functions
-       setup_census_schema,
-       download_county_shapefile,
-       load_counties_to_db,
-       initialize_database,
-       # Export utility functions
-       list_all_geoids,
-       which_sets,
-       create_predefined_set,
-       create_all_predefined_sets
+setup_census_schema,
+download_county_shapefile,
+load_counties_to_db,
+initialize_database,
+# Export utility functions
+list_all_geoids,
+which_sets,
+create_predefined_set,
+create_all_predefined_sets
 
 end # module GeoIDs 

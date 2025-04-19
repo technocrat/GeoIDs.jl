@@ -154,4 +154,39 @@ export union_geoid_sets,
        difference_geoid_sets,
        symmetric_difference_geoid_sets
 
+"""
+    get_centroid_longitude_range_geoids(min_long::Float64, max_long::Float64) -> Vector{String}
+
+Returns GEOIDs for counties with centroids between the specified longitude range.
+Longitude values should be in decimal degrees, with negative values for western hemisphere.
+
+# Arguments
+- `min_long::Float64`: Minimum longitude (western boundary)
+- `max_long::Float64`: Maximum longitude (eastern boundary)
+
+# Returns
+- `Vector{String}`: Vector of county GEOIDs within the specified longitude range
+
+# Example
+```julia
+# Get counties between -110°W and -115°W
+geoids = get_centroid_longitude_range_geoids(-115.0, -110.0)
+```
+"""
+function get_centroid_longitude_range_geoids(min_long::Float64, max_long::Float64)
+    conn = get_connection()
+    try
+        query = """
+        SELECT geoid 
+        FROM census.counties 
+        WHERE ST_X(ST_Centroid(geom)) BETWEEN $min_long AND $max_long
+        ORDER BY geoid;
+        """
+        result = execute(conn, query)
+        return DataFrame(result).geoid
+    finally
+        return_connection(conn)
+    end
+end
+
 end # module Operations 
