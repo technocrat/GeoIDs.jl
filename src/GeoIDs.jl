@@ -16,8 +16,8 @@ include("store.jl")
 include("fetch.jl")
 include("operations.jl")
 include("setup.jl")
-#include("predefined_sets.jl") # Include the new predefined sets module
-include("list_all_geoids.jl") # Include the list_all_geoids function
+include("predefined_sets.jl") 
+include("list_all_geoids.jl") 
 
 # Import and re-export from sub-modules
 using .DB
