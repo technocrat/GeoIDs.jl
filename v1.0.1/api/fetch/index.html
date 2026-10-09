@@ -1,0 +1,351 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Fetch Module — GeoIDs.jl</title>
+  <link rel="stylesheet" href="../../assets/materialdocs.css?v=3cd33697">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fira+Sans:wght@400;500;600;700&family=Source+Sans+3:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap">
+  <meta name="title" content="Fetch Module — GeoIDs.jl">
+  <meta property="og:title" content="Fetch Module — GeoIDs.jl">
+  <meta property="twitter:title" content="Fetch Module — GeoIDs.jl">
+  <meta name="description" content="Documentation for GeoIDs.jl.">
+  <meta property="og:description" content="Documentation for GeoIDs.jl.">
+  <meta property="twitter:description" content="Documentation for GeoIDs.jl.">
+  <meta property="og:url" content="https://technocrat.github.io/GeoIDs.jl/api/fetch/">
+  <meta property="twitter:url" content="https://technocrat.github.io/GeoIDs.jl/api/fetch/">
+  <link rel="canonical" href="https://technocrat.github.io/GeoIDs.jl/api/fetch/">
+  <script>
+    (function(){
+      document.documentElement.classList.add('no-transition');
+      var t=localStorage.getItem('md-theme');if(t)document.documentElement.setAttribute('data-theme',t);
+      window.addEventListener('load',function(){setTimeout(function(){document.documentElement.classList.remove('no-transition');},50);});
+    })()
+  </script>
+</head>
+<body data-warn-outdated>
+  <header class="md-navbar">
+    <button id="md-hamburger" class="md-icon-btn md-hamburger" aria-label="Toggle navigation" aria-expanded="false"><svg class="md-icon" viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true" focusable="false"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg></button>
+    <span class="md-navbar-title">GeoIDs.jl</span>
+    <span class="md-navbar-spacer"></span>
+    <button id="md-search-btn" class="md-search-bar" aria-label="Search documentation" aria-expanded="false">
+      <svg class="md-icon md-search-bar-icon" viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true" focusable="false"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+      <span class="md-search-bar-label">Search docs</span>
+      <kbd class="md-search-bar-kbd">Ctrl K</kbd>
+    </button>
+    <div id="md-version" class="md-version" hidden>
+      <button id="md-version-btn" class="md-version-btn" aria-haspopup="listbox" aria-expanded="false" aria-label="Select documentation version">
+        <span id="md-version-current" class="md-version-current"></span>
+        <svg class="md-icon md-version-caret" viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true" focusable="false"><path d="M7 10l5 5 5-5z"/></svg>
+      </button>
+      <ul id="md-version-menu" class="md-version-menu" role="listbox" hidden></ul>
+    </div>
+    <a class="md-icon-btn md-repo-link" href="https://github.com/technocrat/GeoIDs.jl" title="View the repository on GitHub" aria-label="View the repository on GitHub" rel="noopener" target="_blank"><svg class="md-icon" viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true" focusable="false"><path d="M12 .3a12 12 0 00-3.8 23.4c.6.1.8-.3.8-.6v-2c-3.3.7-4-1.6-4-1.6-.6-1.4-1.4-1.8-1.4-1.8-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.8 1.3 3.5 1 0-.8.4-1.3.7-1.6-2.7-.3-5.5-1.3-5.5-6 0-1.2.5-2.3 1.3-3.1-.2-.4-.6-1.6.1-3.2 0 0 1-.3 3.3 1.2a11.5 11.5 0 016 0c2.3-1.5 3.3-1.2 3.3-1.2.7 1.6.2 2.8.1 3.2.8.8 1.3 1.9 1.3 3.2 0 4.6-2.8 5.6-5.5 5.9.5.4.9 1.1.9 2.2v3.3c0 .3.1.7.8.6A12 12 0 0012 .3z"/></svg><span class="md-repo-label">GitHub</span></a>
+    <button id="md-theme-toggle" class="md-icon-btn" title="Toggle dark mode" aria-label="Toggle dark mode"><svg class="md-icon md-icon-light" viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true" focusable="false"><path d="M12 7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zM2 13h2c.55 0 1-.45 1-1s-.45-1-1-1H2c-.55 0-1 .45-1 1s.45 1 1 1zm18 0h2c.55 0 1-.45 1-1s-.45-1-1-1h-2c-.55 0-1 .45-1 1s.45 1 1 1zM11 2v2c0 .55.45 1 1 1s1-.45 1-1V2c0-.55-.45-1-1-1s-1 .45-1 1zm0 18v2c0 .55.45 1 1 1s1-.45 1-1v-2c0-.55-.45-1-1-1s-1 .45-1 1zM5.99 4.58a.996.996 0 00-1.41 0 .996.996 0 000 1.41l1.06 1.06c.39.39 1.03.39 1.41 0s.39-1.03 0-1.41L5.99 4.58zm12.37 12.37a.996.996 0 00-1.41 0 .996.996 0 000 1.41l1.06 1.06c.39.39 1.03.39 1.41 0a.996.996 0 000-1.41l-1.06-1.06zm1.06-10.96a.996.996 0 000-1.41.996.996 0 00-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41s1.03.39 1.41 0l1.06-1.06zM7.05 18.36a.996.996 0 000-1.41.996.996 0 00-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41s1.03.39 1.41 0l1.06-1.06z"/></svg><svg class="md-icon md-icon-dark" viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true" focusable="false"><path d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9 9-4.03 9-9c0-.46-.04-.92-.1-1.36-.98 1.37-2.58 2.26-4.4 2.26-2.98 0-5.4-2.42-5.4-5.4 0-1.81.89-3.42 2.26-4.4-.44-.06-.9-.1-1.36-.1z"/></svg></button>
+  </header>
+  <div class="md-layout">
+    <nav class="md-sidebar">
+      <a href="../../">Home</a>
+      <div class="md-nav-section">
+        <span class="md-nav-section-title">User Guide</span>
+        <a href="../../guide/postgresql-setup/">PostgreSQL Setup</a>
+        <a href="../../guide/database-config/">Database Configuration</a>
+        <a href="../../guide/database-setup/">Database Setup</a>
+        <a href="../../guide/getting-started/">Getting Started</a>
+        <a href="../../guide/geoid-sets/">GEOID Sets</a>
+        <a href="../../guide/spatial-filtering/">Spatial Filtering</a>
+        <a href="../../guide/set-operations/">Set Operations</a>
+        <a href="../../guide/versioning/">Versioning</a>
+      </div>
+      <div class="md-nav-section">
+        <span class="md-nav-section-title">API Reference</span>
+        <a href="../../api/core/">Core</a>
+        <a href="../../api/db/">DB</a>
+        <a href="../../api/store/">Store</a>
+        <a href="../../api/fetch/" class="md-nav-active">Fetch</a>
+        <a href="../../api/operations/">Operations</a>
+        <a href="../../api/setup/">Setup</a>
+      </div>
+      <a href="../../contributing/">Contributing</a>
+    </nav>
+    <main class="md-content">
+      <article class="md-article">
+      <div class="md-article-actions"><a class="md-icon-btn md-edit-link" href="https://github.com/technocrat/GeoIDs.jl/blob/main/docs/src/api/fetch.md" title="Edit source on GitHub" aria-label="Edit source on GitHub"><svg class="md-icon" viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true" focusable="false"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04a.996.996 0 000-1.41l-2.34-2.34a.996.996 0 00-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg></a></div>
+<h1 id="Fetch-Module" class="md-heading">Fetch Module<a href="#Fetch-Module" class="md-heading-anchor" aria-label="Link to this section">#</a></h1>
+<p>The Fetch module provides functions for retrieving GEOIDs based on various criteria, including spatial filters, state boundaries, and predefined regions.</p>
+<h2 id="Spatial-Filtering" class="md-heading">Spatial Filtering<a href="#Spatial-Filtering" class="md-heading-anchor" aria-label="Link to this section">#</a></h2>
+<p>Functions for retrieving GEOIDs based on spatial criteria:</p>
+<div class="md-docstring" id="GeoIDs.Fetch.get_geoids_by_spatial_filter">
+<div class="md-docstring-header">
+<h4 class="md-docstring-binding"><code>GeoIDs.Fetch.get_geoids_by_spatial_filter</code></h4>
+<a class="md-docstring-source" href="https://github.com/technocrat/GeoIDs.jl/blob/cb80628dbd1667d1e14f53cd3489d59837c92467/src/fetch.jl#L94-L119" title="View source">source</a>
+</div>
+<div class="md-docstring-content">
+<div class="md-code-block">
+<button class="md-copy-btn" title="Copy to clipboard" aria-label="Copy code"><span class="md-copy-icon">⧉</span><span class="md-copy-feedback">Copied!</span></button>
+<pre><code class="language-julia">get_geoids_by_spatial_filter(filter_type::Symbol, parameters::Dict) -&gt; Vector{String}</code></pre>
+</div>
+<p>Generate GEOIDs based on spatial filtering parameters.</p>
+<p><strong>Filter Types</strong></p>
+<ul class="md-list-tight">
+<li><p><code class="md-code-inline">:longitude</code>: Filter by longitude range (requires <code class="md-code-inline">min_lon</code>, <code class="md-code-inline">max_lon</code>)</p>
+</li>
+<li><p><code class="md-code-inline">:latitude</code>: Filter by latitude range (requires <code class="md-code-inline">min_lat</code>, <code class="md-code-inline">max_lat</code>)</p>
+</li>
+<li><p><code class="md-code-inline">:bounding_box</code>: Filter by bounding box (requires <code class="md-code-inline">min_lon</code>, <code class="md-code-inline">max_lon</code>, <code class="md-code-inline">min_lat</code>, <code class="md-code-inline">max_lat</code>)</p>
+</li>
+<li><p><code class="md-code-inline">:distance</code>: Filter by distance from point (requires <code class="md-code-inline">center_lon</code>, <code class="md-code-inline">center_lat</code>, <code class="md-code-inline">radius_miles</code>)</p>
+</li>
+<li><p><code class="md-code-inline">:state</code>: Filter by state (requires <code class="md-code-inline">states</code> as array of state abbreviations)</p>
+</li>
+<li><p><code class="md-code-inline">:intersects</code>: Filter by intersection with geometry (requires <code class="md-code-inline">geometry</code>)</p>
+</li>
+</ul>
+<p><strong>Example</strong></p>
+<div class="md-code-block">
+<button class="md-copy-btn" title="Copy to clipboard" aria-label="Copy code"><span class="md-copy-icon">⧉</span><span class="md-copy-feedback">Copied!</span></button>
+<pre><code class="language-julia"># Get counties within longitude range
+west_counties = get_geoids_by_spatial_filter(:longitude, Dict(&quot;min_lon&quot; =&gt; -120.0, &quot;max_lon&quot; =&gt; -110.0))
+
+# Get counties within 50 miles of Chicago
+chicago_area = get_geoids_by_spatial_filter(:distance, Dict(
+    &quot;center_lon&quot; =&gt; -87.623177, 
+    &quot;center_lat&quot; =&gt; 41.881832, 
+    &quot;radius_miles&quot; =&gt; 50
+))</code></pre>
+</div>
+</div>
+</div>
+<h2 id="Regional-and-State-Filters" class="md-heading">Regional and State Filters<a href="#Regional-and-State-Filters" class="md-heading-anchor" aria-label="Link to this section">#</a></h2>
+<p>Functions for retrieving GEOIDs based on predefined regions or state boundaries:</p>
+<div class="md-docstring" id="GeoIDs.Fetch.get_geoids_by_state">
+<div class="md-docstring-header">
+<h4 class="md-docstring-binding"><code>GeoIDs.Fetch.get_geoids_by_state</code></h4>
+<a class="md-docstring-source" href="https://github.com/technocrat/GeoIDs.jl/blob/cb80628dbd1667d1e14f53cd3489d59837c92467/src/fetch.jl#L8-L23" title="View source">source</a>
+</div>
+<div class="md-docstring-content">
+<div class="md-code-block">
+<button class="md-copy-btn" title="Copy to clipboard" aria-label="Copy code"><span class="md-copy-icon">⧉</span><span class="md-copy-feedback">Copied!</span></button>
+<pre><code class="language-julia">get_geoids_by_state(state::String) -&gt; Vector{String}</code></pre>
+</div>
+<p>Get GEOIDs for all counties in a state.</p>
+<p><strong>Arguments</strong></p>
+<ul class="md-list-tight">
+<li><p><code class="md-code-inline">state::String</code>: State postal code (e.g., &quot;CA&quot;)</p>
+</li>
+</ul>
+<p><strong>Returns</strong></p>
+<ul class="md-list-tight">
+<li><p><code class="md-code-inline">Vector{String}</code>: GEOIDs for counties in the state</p>
+</li>
+</ul>
+<p><strong>Example</strong></p>
+<div class="md-code-block">
+<button class="md-copy-btn" title="Copy to clipboard" aria-label="Copy code"><span class="md-copy-icon">⧉</span><span class="md-copy-feedback">Copied!</span></button>
+<pre><code class="language-julia">ca_geoids = get_geoids_by_state(&quot;CA&quot;)</code></pre>
+</div>
+</div>
+</div>
+<div class="md-docstring" id="GeoIDs.Fetch.get_western_geoids">
+<div class="md-docstring-header">
+<h4 class="md-docstring-binding"><code>GeoIDs.Fetch.get_western_geoids</code></h4>
+<a class="md-docstring-source" href="https://github.com/technocrat/GeoIDs.jl/blob/cb80628dbd1667d1e14f53cd3489d59837c92467/src/fetch.jl#L160-L165" title="View source">source</a>
+</div>
+<div class="md-docstring-content">
+<div class="md-code-block">
+<button class="md-copy-btn" title="Copy to clipboard" aria-label="Copy code"><span class="md-copy-icon">⧉</span><span class="md-copy-feedback">Copied!</span></button>
+<pre><code class="language-julia">get_western_geoids() -&gt; Vector{String}</code></pre>
+</div>
+<p>Returns GEOIDs for counties west of 100°W longitude and east of 115°W longitude, getting the high plains counties with historically low rainfall (&lt; 20 inches per year).</p>
+</div>
+</div>
+<div class="md-docstring" id="GeoIDs.Fetch.get_eastern_geoids">
+<div class="md-docstring-header">
+<h4 class="md-docstring-binding"><code>GeoIDs.Fetch.get_eastern_geoids</code></h4>
+<a class="md-docstring-source" href="https://github.com/technocrat/GeoIDs.jl/blob/cb80628dbd1667d1e14f53cd3489d59837c92467/src/fetch.jl#L173-L178" title="View source">source</a>
+</div>
+<div class="md-docstring-content">
+<div class="md-code-block">
+<button class="md-copy-btn" title="Copy to clipboard" aria-label="Copy code"><span class="md-copy-icon">⧉</span><span class="md-copy-feedback">Copied!</span></button>
+<pre><code class="language-julia">get_eastern_geoids() -&gt; Vector{String}</code></pre>
+</div>
+<p>Returns GEOIDs for counties between 90°W and 100°W longitude, getting the eastern counties with historically high rainfall (&gt; 20 inches per year).</p>
+</div>
+</div>
+<div class="md-docstring" id="GeoIDs.Fetch.get_florida_south_geoids">
+<div class="md-docstring-header">
+<h4 class="md-docstring-binding"><code>GeoIDs.Fetch.get_florida_south_geoids</code></h4>
+<a class="md-docstring-source" href="https://github.com/technocrat/GeoIDs.jl/blob/cb80628dbd1667d1e14f53cd3489d59837c92467/src/fetch.jl#L186-L190" title="View source">source</a>
+</div>
+<div class="md-docstring-content">
+<div class="md-code-block">
+<button class="md-copy-btn" title="Copy to clipboard" aria-label="Copy code"><span class="md-copy-icon">⧉</span><span class="md-copy-feedback">Copied!</span></button>
+<pre><code class="language-julia">get_florida_south_geoids() -&gt; Vector{String}</code></pre>
+</div>
+<p>Returns GEOIDs for Florida counties with centroids south of 29°N latitude.</p>
+</div>
+</div>
+<h2 id="County-Retrieval" class="md-heading">County Retrieval<a href="#County-Retrieval" class="md-heading-anchor" aria-label="Link to this section">#</a></h2>
+<div class="md-docstring" id="GeoIDs.Fetch.get_geoids_by_states">
+<div class="md-docstring-header">
+<h4 class="md-docstring-binding"><code>GeoIDs.Fetch.get_geoids_by_states</code></h4>
+<a class="md-docstring-source" href="https://github.com/technocrat/GeoIDs.jl/blob/cb80628dbd1667d1e14f53cd3489d59837c92467/src/fetch.jl#L36-L51" title="View source">source</a>
+</div>
+<div class="md-docstring-content">
+<div class="md-code-block">
+<button class="md-copy-btn" title="Copy to clipboard" aria-label="Copy code"><span class="md-copy-icon">⧉</span><span class="md-copy-feedback">Copied!</span></button>
+<pre><code class="language-julia">get_geoids_by_states(states::Vector{String}) -&gt; Vector{String}</code></pre>
+</div>
+<p>Get GEOIDs for all counties in multiple states.</p>
+<p><strong>Arguments</strong></p>
+<ul class="md-list-tight">
+<li><p><code class="md-code-inline">states::Vector{String}</code>: Vector of state postal codes (e.g., [&quot;CA&quot;, &quot;OR&quot;, &quot;WA&quot;])</p>
+</li>
+</ul>
+<p><strong>Returns</strong></p>
+<ul class="md-list-tight">
+<li><p><code class="md-code-inline">Vector{String}</code>: GEOIDs for counties in the specified states</p>
+</li>
+</ul>
+<p><strong>Example</strong></p>
+<div class="md-code-block">
+<button class="md-copy-btn" title="Copy to clipboard" aria-label="Copy code"><span class="md-copy-icon">⧉</span><span class="md-copy-feedback">Copied!</span></button>
+<pre><code class="language-julia">west_coast_geoids = get_geoids_by_states([&quot;CA&quot;, &quot;OR&quot;, &quot;WA&quot;])</code></pre>
+</div>
+</div>
+</div>
+<div class="md-docstring" id="GeoIDs.Fetch.get_geoids_by_county_names">
+<div class="md-docstring-header">
+<h4 class="md-docstring-binding"><code>GeoIDs.Fetch.get_geoids_by_county_names</code></h4>
+<a class="md-docstring-source" href="https://github.com/technocrat/GeoIDs.jl/blob/cb80628dbd1667d1e14f53cd3489d59837c92467/src/fetch.jl#L64-L80" title="View source">source</a>
+</div>
+<div class="md-docstring-content">
+<div class="md-code-block">
+<button class="md-copy-btn" title="Copy to clipboard" aria-label="Copy code"><span class="md-copy-icon">⧉</span><span class="md-copy-feedback">Copied!</span></button>
+<pre><code class="language-julia">get_geoids_by_county_names(state::String, counties::Vector{String}) -&gt; Vector{String}</code></pre>
+</div>
+<p>Get GEOIDs for specific counties in a state by name.</p>
+<p><strong>Arguments</strong></p>
+<ul class="md-list-tight">
+<li><p><code class="md-code-inline">state::String</code>: State postal code (e.g., &quot;CA&quot;)</p>
+</li>
+<li><p><code class="md-code-inline">counties::Vector{String}</code>: Vector of county names</p>
+</li>
+</ul>
+<p><strong>Returns</strong></p>
+<ul class="md-list-tight">
+<li><p><code class="md-code-inline">Vector{String}</code>: GEOIDs for the specified counties</p>
+</li>
+</ul>
+<p><strong>Example</strong></p>
+<div class="md-code-block">
+<button class="md-copy-btn" title="Copy to clipboard" aria-label="Copy code"><span class="md-copy-icon">⧉</span><span class="md-copy-feedback">Copied!</span></button>
+<pre><code class="language-julia">socal_geoids = get_geoids_by_county_names(&quot;CA&quot;, [&quot;Los Angeles&quot;, &quot;Orange&quot;, &quot;San Diego&quot;])</code></pre>
+</div>
+</div>
+</div>
+<div class="md-docstring" id="GeoIDs.Fetch.get_geoids_by_population_range">
+<div class="md-docstring-header">
+<h4 class="md-docstring-binding"><code>GeoIDs.Fetch.get_geoids_by_population_range</code></h4>
+<a class="md-docstring-source" href="https://github.com/technocrat/GeoIDs.jl/blob/cb80628dbd1667d1e14f53cd3489d59837c92467/src/fetch.jl#L262-L278" title="View source">source</a>
+</div>
+<div class="md-docstring-content">
+<div class="md-code-block">
+<button class="md-copy-btn" title="Copy to clipboard" aria-label="Copy code"><span class="md-copy-icon">⧉</span><span class="md-copy-feedback">Copied!</span></button>
+<pre><code class="language-julia">get_geoids_by_population_range(min_pop::Int, max_pop::Int) -&gt; Vector{String}</code></pre>
+</div>
+<p>Get GEOIDs for counties with population within the specified range.</p>
+<p><strong>Arguments</strong></p>
+<ul class="md-list-tight">
+<li><p><code class="md-code-inline">min_pop::Int</code>: Minimum population</p>
+</li>
+<li><p><code class="md-code-inline">max_pop::Int</code>: Maximum population</p>
+</li>
+</ul>
+<p><strong>Returns</strong></p>
+<ul class="md-list-tight">
+<li><p><code class="md-code-inline">Vector{String}</code>: GEOIDs for counties in the population range</p>
+</li>
+</ul>
+<p><strong>Example</strong></p>
+<div class="md-code-block">
+<button class="md-copy-btn" title="Copy to clipboard" aria-label="Copy code"><span class="md-copy-icon">⧉</span><span class="md-copy-feedback">Copied!</span></button>
+<pre><code class="language-julia">rural_counties = get_geoids_by_population_range(0, 50000)</code></pre>
+</div>
+</div>
+</div>
+<div class="md-docstring" id="GeoIDs.Fetch.get_geoids_by_custom_query">
+<div class="md-docstring-header">
+<h4 class="md-docstring-binding"><code>GeoIDs.Fetch.get_geoids_by_custom_query</code></h4>
+<a class="md-docstring-source" href="https://github.com/technocrat/GeoIDs.jl/blob/cb80628dbd1667d1e14f53cd3489d59837c92467/src/fetch.jl#L293-L312" title="View source">source</a>
+</div>
+<div class="md-docstring-content">
+<div class="md-code-block">
+<button class="md-copy-btn" title="Copy to clipboard" aria-label="Copy code"><span class="md-copy-icon">⧉</span><span class="md-copy-feedback">Copied!</span></button>
+<pre><code class="language-julia">get_geoids_by_custom_query(query::String, params::Vector=[]) -&gt; Vector{String}</code></pre>
+</div>
+<p>Get GEOIDs using a custom SQL query.</p>
+<p><strong>Arguments</strong></p>
+<ul class="md-list-tight">
+<li><p><code class="md-code-inline">query::String</code>: Custom SQL query (must return a &#39;geoid&#39; column)</p>
+</li>
+<li><p><code class="md-code-inline">params::Vector</code>: Query parameters</p>
+</li>
+</ul>
+<p><strong>Returns</strong></p>
+<ul class="md-list-tight">
+<li><p><code class="md-code-inline">Vector{String}</code>: GEOIDs returned by the query</p>
+</li>
+</ul>
+<p><strong>Example</strong></p>
+<div class="md-code-block">
+<button class="md-copy-btn" title="Copy to clipboard" aria-label="Copy code"><span class="md-copy-icon">⧉</span><span class="md-copy-feedback">Copied!</span></button>
+<pre><code class="language-julia">custom_geoids = get_geoids_by_custom_query(
+    &quot;SELECT geoid FROM census.counties WHERE name LIKE $1&quot;, 
+    [&quot;%San%&quot;]
+)</code></pre>
+</div>
+</div>
+</div>
+<h2 id="Module-Index" class="md-heading">Module Index<a href="#Module-Index" class="md-heading-anchor" aria-label="Link to this section">#</a></h2>
+<div class="md-index">
+<ul>
+<li><a href="#GeoIDs.Fetch.get_eastern_geoids"><code>GeoIDs.Fetch.get_eastern_geoids</code></a></li>
+<li><a href="#GeoIDs.Fetch.get_florida_south_geoids"><code>GeoIDs.Fetch.get_florida_south_geoids</code></a></li>
+<li><a href="#GeoIDs.Fetch.get_geoids_by_county_names"><code>GeoIDs.Fetch.get_geoids_by_county_names</code></a></li>
+<li><a href="#GeoIDs.Fetch.get_geoids_by_custom_query"><code>GeoIDs.Fetch.get_geoids_by_custom_query</code></a></li>
+<li><a href="#GeoIDs.Fetch.get_geoids_by_population_range"><code>GeoIDs.Fetch.get_geoids_by_population_range</code></a></li>
+<li><a href="#GeoIDs.Fetch.get_geoids_by_spatial_filter"><code>GeoIDs.Fetch.get_geoids_by_spatial_filter</code></a></li>
+<li><a href="#GeoIDs.Fetch.get_geoids_by_state"><code>GeoIDs.Fetch.get_geoids_by_state</code></a></li>
+<li><a href="#GeoIDs.Fetch.get_geoids_by_states"><code>GeoIDs.Fetch.get_geoids_by_states</code></a></li>
+<li><a href="#GeoIDs.Fetch.get_western_geoids"><code>GeoIDs.Fetch.get_western_geoids</code></a></li>
+</ul>
+</div>
+<div class="md-code-block">
+<button class="md-copy-btn" title="Copy to clipboard" aria-label="Copy code"><span class="md-copy-icon">⧉</span><span class="md-copy-feedback">Copied!</span></button>
+<pre><code></code></pre>
+</div>
+      </article>
+      <footer class="md-footer">
+<p>Built with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and <a href="https://github.com/mthelm85/MaterialDocs.jl">MaterialDocs.jl</a>.</p>
+      </footer>
+    </main>
+    <aside class="md-toc">
+      <div class="md-toc-inner">
+        <p class="md-toc-title">On this page</p>
+          <a class="md-toc-link md-toc-h2" href="#Spatial-Filtering">Spatial Filtering</a>
+          <a class="md-toc-link md-toc-h2" href="#Regional-and-State-Filters">Regional and State Filters</a>
+          <a class="md-toc-link md-toc-h2" href="#County-Retrieval">County Retrieval</a>
+          <a class="md-toc-link md-toc-h2" href="#Module-Index">Module Index</a>
+      </div>
+    </aside>
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/julia.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/julia-repl.min.js"></script>
+  <script>hljs.highlightAll();</script>
+  <script src="../../siteinfo.js"></script>
+  <script src="../../../versions.js"></script>
+  <script src="../../assets/materialdocs.js?v=3cd33697"></script>
+</body>
+</html>

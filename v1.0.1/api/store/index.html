@@ -1,0 +1,384 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Store Module — GeoIDs.jl</title>
+  <link rel="stylesheet" href="../../assets/materialdocs.css?v=d05767eb">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fira+Sans:wght@400;500;600;700&family=Source+Sans+3:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap">
+  <meta name="title" content="Store Module — GeoIDs.jl">
+  <meta property="og:title" content="Store Module — GeoIDs.jl">
+  <meta property="twitter:title" content="Store Module — GeoIDs.jl">
+  <meta name="description" content="Documentation for GeoIDs.jl.">
+  <meta property="og:description" content="Documentation for GeoIDs.jl.">
+  <meta property="twitter:description" content="Documentation for GeoIDs.jl.">
+  <meta property="og:url" content="https://technocrat.github.io/GeoIDs.jl/api/store/">
+  <meta property="twitter:url" content="https://technocrat.github.io/GeoIDs.jl/api/store/">
+  <link rel="canonical" href="https://technocrat.github.io/GeoIDs.jl/api/store/">
+  <script>
+    (function(){
+      document.documentElement.classList.add('no-transition');
+      var t=localStorage.getItem('md-theme');if(t)document.documentElement.setAttribute('data-theme',t);
+      window.addEventListener('load',function(){setTimeout(function(){document.documentElement.classList.remove('no-transition');},50);});
+    })()
+  </script>
+</head>
+<body data-warn-outdated>
+  <header class="md-navbar">
+    <button id="md-hamburger" class="md-icon-btn md-hamburger" aria-label="Toggle navigation" aria-expanded="false"><svg class="md-icon" viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true" focusable="false"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg></button>
+    <span class="md-navbar-title">GeoIDs.jl</span>
+    <span class="md-navbar-spacer"></span>
+    <button id="md-search-btn" class="md-search-bar" aria-label="Search documentation" aria-expanded="false">
+      <svg class="md-icon md-search-bar-icon" viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true" focusable="false"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+      <span class="md-search-bar-label">Search docs</span>
+      <kbd class="md-search-bar-kbd">Ctrl K</kbd>
+    </button>
+    <div id="md-version" class="md-version" hidden>
+      <button id="md-version-btn" class="md-version-btn" aria-haspopup="listbox" aria-expanded="false" aria-label="Select documentation version">
+        <span id="md-version-current" class="md-version-current"></span>
+        <svg class="md-icon md-version-caret" viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true" focusable="false"><path d="M7 10l5 5 5-5z"/></svg>
+      </button>
+      <ul id="md-version-menu" class="md-version-menu" role="listbox" hidden></ul>
+    </div>
+    <a class="md-icon-btn md-repo-link" href="https://github.com/technocrat/GeoIDs.jl" title="View the repository on GitHub" aria-label="View the repository on GitHub" rel="noopener" target="_blank"><svg class="md-icon" viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true" focusable="false"><path d="M12 .3a12 12 0 00-3.8 23.4c.6.1.8-.3.8-.6v-2c-3.3.7-4-1.6-4-1.6-.6-1.4-1.4-1.8-1.4-1.8-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.8 1.3 3.5 1 0-.8.4-1.3.7-1.6-2.7-.3-5.5-1.3-5.5-6 0-1.2.5-2.3 1.3-3.1-.2-.4-.6-1.6.1-3.2 0 0 1-.3 3.3 1.2a11.5 11.5 0 016 0c2.3-1.5 3.3-1.2 3.3-1.2.7 1.6.2 2.8.1 3.2.8.8 1.3 1.9 1.3 3.2 0 4.6-2.8 5.6-5.5 5.9.5.4.9 1.1.9 2.2v3.3c0 .3.1.7.8.6A12 12 0 0012 .3z"/></svg><span class="md-repo-label">GitHub</span></a>
+    <button id="md-theme-toggle" class="md-icon-btn" title="Toggle dark mode" aria-label="Toggle dark mode"><svg class="md-icon md-icon-light" viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true" focusable="false"><path d="M12 7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zM2 13h2c.55 0 1-.45 1-1s-.45-1-1-1H2c-.55 0-1 .45-1 1s.45 1 1 1zm18 0h2c.55 0 1-.45 1-1s-.45-1-1-1h-2c-.55 0-1 .45-1 1s.45 1 1 1zM11 2v2c0 .55.45 1 1 1s1-.45 1-1V2c0-.55-.45-1-1-1s-1 .45-1 1zm0 18v2c0 .55.45 1 1 1s1-.45 1-1v-2c0-.55-.45-1-1-1s-1 .45-1 1zM5.99 4.58a.996.996 0 00-1.41 0 .996.996 0 000 1.41l1.06 1.06c.39.39 1.03.39 1.41 0s.39-1.03 0-1.41L5.99 4.58zm12.37 12.37a.996.996 0 00-1.41 0 .996.996 0 000 1.41l1.06 1.06c.39.39 1.03.39 1.41 0a.996.996 0 000-1.41l-1.06-1.06zm1.06-10.96a.996.996 0 000-1.41.996.996 0 00-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41s1.03.39 1.41 0l1.06-1.06zM7.05 18.36a.996.996 0 000-1.41.996.996 0 00-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41s1.03.39 1.41 0l1.06-1.06z"/></svg><svg class="md-icon md-icon-dark" viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true" focusable="false"><path d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9 9-4.03 9-9c0-.46-.04-.92-.1-1.36-.98 1.37-2.58 2.26-4.4 2.26-2.98 0-5.4-2.42-5.4-5.4 0-1.81.89-3.42 2.26-4.4-.44-.06-.9-.1-1.36-.1z"/></svg></button>
+  </header>
+  <div class="md-layout">
+    <nav class="md-sidebar">
+      <a href="../../">Home</a>
+      <div class="md-nav-section">
+        <span class="md-nav-section-title">User Guide</span>
+        <a href="../../guide/postgresql-setup/">PostgreSQL Setup</a>
+        <a href="../../guide/database-config/">Database Configuration</a>
+        <a href="../../guide/database-setup/">Database Setup</a>
+        <a href="../../guide/getting-started/">Getting Started</a>
+        <a href="../../guide/geoid-sets/">GEOID Sets</a>
+        <a href="../../guide/spatial-filtering/">Spatial Filtering</a>
+        <a href="../../guide/set-operations/">Set Operations</a>
+        <a href="../../guide/versioning/">Versioning</a>
+      </div>
+      <div class="md-nav-section">
+        <span class="md-nav-section-title">API Reference</span>
+        <a href="../../api/core/">Core</a>
+        <a href="../../api/db/">DB</a>
+        <a href="../../api/store/" class="md-nav-active">Store</a>
+        <a href="../../api/fetch/">Fetch</a>
+        <a href="../../api/operations/">Operations</a>
+        <a href="../../api/setup/">Setup</a>
+      </div>
+      <a href="../../contributing/">Contributing</a>
+    </nav>
+    <main class="md-content">
+      <article class="md-article">
+      <div class="md-article-actions"><a class="md-icon-btn md-edit-link" href="https://github.com/technocrat/GeoIDs.jl/blob/main/docs/src/api/store.md" title="Edit source on GitHub" aria-label="Edit source on GitHub"><svg class="md-icon" viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true" focusable="false"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04a.996.996 0 000-1.41l-2.34-2.34a.996.996 0 00-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg></a></div>
+<h1 id="Store-Module" class="md-heading">Store Module<a href="#Store-Module" class="md-heading-anchor" aria-label="Link to this section">#</a></h1>
+<p>The Store module provides functions for creating, retrieving, and managing GEOID sets in the database with versioning support.</p>
+<h2 id="Creating-GEOID-Sets" class="md-heading">Creating GEOID Sets<a href="#Creating-GEOID-Sets" class="md-heading-anchor" aria-label="Link to this section">#</a></h2>
+<p>Functions for creating new GEOID sets and versions:</p>
+<div class="md-docstring" id="GeoIDs.Store.create_geoid_set">
+<div class="md-docstring-header">
+<h4 class="md-docstring-binding"><code>GeoIDs.Store.create_geoid_set</code></h4>
+<a class="md-docstring-source" href="https://github.com/technocrat/GeoIDs.jl/blob/cb80628dbd1667d1e14f53cd3489d59837c92467/src/store.jl#L10-L14" title="View source">source</a>
+</div>
+<div class="md-docstring-content">
+<div class="md-code-block">
+<button class="md-copy-btn" title="Copy to clipboard" aria-label="Copy code"><span class="md-copy-icon">⧉</span><span class="md-copy-feedback">Copied!</span></button>
+<pre><code class="language-julia">create_geoid_set(set_name::String, description::String=&quot;&quot;, geoids::Vector{String}=String[])</code></pre>
+</div>
+<p>Create a new GEOID set with optional initial members.</p>
+</div>
+</div>
+<div class="md-docstring" id="GeoIDs.Store.create_geoid_set_version">
+<div class="md-docstring-header">
+<h4 class="md-docstring-binding"><code>GeoIDs.Store.create_geoid_set_version</code></h4>
+<a class="md-docstring-source" href="https://github.com/technocrat/GeoIDs.jl/blob/cb80628dbd1667d1e14f53cd3489d59837c92467/src/store.jl#L20-L36" title="View source">source</a>
+</div>
+<div class="md-docstring-content">
+<div class="md-code-block">
+<button class="md-copy-btn" title="Copy to clipboard" aria-label="Copy code"><span class="md-copy-icon">⧉</span><span class="md-copy-feedback">Copied!</span></button>
+<pre><code class="language-julia">create_geoid_set_version(set_name::String, geoids::Vector{String}, 
+                        change_description::String=&quot;&quot;, base_version::Int=0,
+                        description::String=&quot;&quot;) -&gt; Int</code></pre>
+</div>
+<p>Create a new version of an existing GEOID set or create a new set (version 1) if it doesn&#39;t exist.</p>
+<p><strong>Arguments</strong></p>
+<ul class="md-list-tight">
+<li><p><code class="md-code-inline">set_name::String</code>: Name of the set</p>
+</li>
+<li><p><code class="md-code-inline">geoids::Vector{String}</code>: GEOIDs for the new version</p>
+</li>
+<li><p><code class="md-code-inline">change_description::String</code>: Description of what changed in this version</p>
+</li>
+<li><p><code class="md-code-inline">base_version::Int</code>: Base version to create from (0 means latest version or new set)</p>
+</li>
+<li><p><code class="md-code-inline">description::String</code>: Description for the set (only used for new sets)</p>
+</li>
+</ul>
+<p><strong>Returns</strong></p>
+<ul class="md-list-tight">
+<li><p><code class="md-code-inline">Int</code>: The new version number</p>
+</li>
+</ul>
+</div>
+</div>
+<h2 id="Retrieving-GEOID-Sets" class="md-heading">Retrieving GEOID Sets<a href="#Retrieving-GEOID-Sets" class="md-heading-anchor" aria-label="Link to this section">#</a></h2>
+<p>Functions for retrieving GEOID sets and their versions:</p>
+<div class="md-docstring" id="GeoIDs.Store.get_geoid_set">
+<div class="md-docstring-header">
+<h4 class="md-docstring-binding"><code>GeoIDs.Store.get_geoid_set</code></h4>
+<a class="md-docstring-source" href="https://github.com/technocrat/GeoIDs.jl/blob/cb80628dbd1667d1e14f53cd3489d59837c92467/src/store.jl#L223-L233" title="View source">source</a>
+</div>
+<div class="md-docstring-content">
+<div class="md-code-block">
+<button class="md-copy-btn" title="Copy to clipboard" aria-label="Copy code"><span class="md-copy-icon">⧉</span><span class="md-copy-feedback">Copied!</span></button>
+<pre><code class="language-julia">get_geoid_set(set_name::String) -&gt; Vector{String}</code></pre>
+</div>
+<p>Get the current version of a GEOID set.</p>
+<p><strong>Arguments</strong></p>
+<ul class="md-list-tight">
+<li><p><code class="md-code-inline">set_name::String</code>: Name of the set</p>
+</li>
+</ul>
+<p><strong>Returns</strong></p>
+<ul class="md-list-tight">
+<li><p><code class="md-code-inline">Vector{String}</code>: GEOIDs in the current version of the set</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="md-docstring" id="GeoIDs.Store.get_geoid_set_version">
+<div class="md-docstring-header">
+<h4 class="md-docstring-binding"><code>GeoIDs.Store.get_geoid_set_version</code></h4>
+<a class="md-docstring-source" href="https://github.com/technocrat/GeoIDs.jl/blob/cb80628dbd1667d1e14f53cd3489d59837c92467/src/store.jl#L167-L178" title="View source">source</a>
+</div>
+<div class="md-docstring-content">
+<div class="md-code-block">
+<button class="md-copy-btn" title="Copy to clipboard" aria-label="Copy code"><span class="md-copy-icon">⧉</span><span class="md-copy-feedback">Copied!</span></button>
+<pre><code class="language-julia">get_geoid_set_version(set_name::String, version::Int=0) -&gt; Vector{String}</code></pre>
+</div>
+<p>Get GEOIDs for a specific version of a set. Use version=0 for current version.</p>
+<p><strong>Arguments</strong></p>
+<ul class="md-list-tight">
+<li><p><code class="md-code-inline">set_name::String</code>: Name of the set</p>
+</li>
+<li><p><code class="md-code-inline">version::Int</code>: Version to retrieve (0 means current version)</p>
+</li>
+</ul>
+<p><strong>Returns</strong></p>
+<ul class="md-list-tight">
+<li><p><code class="md-code-inline">Vector{String}</code>: GEOIDs in the specified version</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="md-docstring" id="GeoIDs.Store.list_geoid_sets">
+<div class="md-docstring-header">
+<h4 class="md-docstring-binding"><code>GeoIDs.Store.list_geoid_sets</code></h4>
+<a class="md-docstring-source" href="https://github.com/technocrat/GeoIDs.jl/blob/cb80628dbd1667d1e14f53cd3489d59837c92467/src/store.jl#L296-L300" title="View source">source</a>
+</div>
+<div class="md-docstring-content">
+<div class="md-code-block">
+<button class="md-copy-btn" title="Copy to clipboard" aria-label="Copy code"><span class="md-copy-icon">⧉</span><span class="md-copy-feedback">Copied!</span></button>
+<pre><code class="language-julia">list_geoid_sets() -&gt; DataFrame</code></pre>
+</div>
+<p>List all available GEOID sets.</p>
+</div>
+</div>
+<div class="md-docstring" id="GeoIDs.Store.list_geoid_set_versions">
+<div class="md-docstring-header">
+<h4 class="md-docstring-binding"><code>GeoIDs.Store.list_geoid_set_versions</code></h4>
+<a class="md-docstring-source" href="https://github.com/technocrat/GeoIDs.jl/blob/cb80628dbd1667d1e14f53cd3489d59837c92467/src/store.jl#L316-L326" title="View source">source</a>
+</div>
+<div class="md-docstring-content">
+<div class="md-code-block">
+<button class="md-copy-btn" title="Copy to clipboard" aria-label="Copy code"><span class="md-copy-icon">⧉</span><span class="md-copy-feedback">Copied!</span></button>
+<pre><code class="language-julia">list_geoid_set_versions(set_name::String) -&gt; DataFrame</code></pre>
+</div>
+<p>List all versions of a GEOID set with change information.</p>
+<p><strong>Arguments</strong></p>
+<ul class="md-list-tight">
+<li><p><code class="md-code-inline">set_name::String</code>: Name of the set</p>
+</li>
+</ul>
+<p><strong>Returns</strong></p>
+<ul class="md-list-tight">
+<li><p><code class="md-code-inline">DataFrame</code>: DataFrame with version info</p>
+</li>
+</ul>
+</div>
+</div>
+<h2 id="Modifying-GEOID-Sets" class="md-heading">Modifying GEOID Sets<a href="#Modifying-GEOID-Sets" class="md-heading-anchor" aria-label="Link to this section">#</a></h2>
+<p>Functions for adding to or removing from GEOID sets:</p>
+<div class="md-docstring" id="GeoIDs.Store.add_to_geoid_set">
+<div class="md-docstring-header">
+<h4 class="md-docstring-binding"><code>GeoIDs.Store.add_to_geoid_set</code></h4>
+<a class="md-docstring-source" href="https://github.com/technocrat/GeoIDs.jl/blob/cb80628dbd1667d1e14f53cd3489d59837c92467/src/store.jl#L238-L250" title="View source">source</a>
+</div>
+<div class="md-docstring-content">
+<div class="md-code-block">
+<button class="md-copy-btn" title="Copy to clipboard" aria-label="Copy code"><span class="md-copy-icon">⧉</span><span class="md-copy-feedback">Copied!</span></button>
+<pre><code class="language-julia">add_to_geoid_set(set_name::String, geoids::Vector{String}, change_description::String=&quot;Added GEOIDs&quot;) -&gt; Int</code></pre>
+</div>
+<p>Add GEOIDs to an existing set by creating a new version.</p>
+<p><strong>Arguments</strong></p>
+<ul class="md-list-tight">
+<li><p><code class="md-code-inline">set_name::String</code>: Name of the set</p>
+</li>
+<li><p><code class="md-code-inline">geoids::Vector{String}</code>: GEOIDs to add</p>
+</li>
+<li><p><code class="md-code-inline">change_description::String</code>: Description of the change</p>
+</li>
+</ul>
+<p><strong>Returns</strong></p>
+<ul class="md-list-tight">
+<li><p><code class="md-code-inline">Int</code>: The new version number</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="md-docstring" id="GeoIDs.Store.remove_from_geoid_set">
+<div class="md-docstring-header">
+<h4 class="md-docstring-binding"><code>GeoIDs.Store.remove_from_geoid_set</code></h4>
+<a class="md-docstring-source" href="https://github.com/technocrat/GeoIDs.jl/blob/cb80628dbd1667d1e14f53cd3489d59837c92467/src/store.jl#L267-L279" title="View source">source</a>
+</div>
+<div class="md-docstring-content">
+<div class="md-code-block">
+<button class="md-copy-btn" title="Copy to clipboard" aria-label="Copy code"><span class="md-copy-icon">⧉</span><span class="md-copy-feedback">Copied!</span></button>
+<pre><code class="language-julia">remove_from_geoid_set(set_name::String, geoids::Vector{String}, change_description::String=&quot;Removed GEOIDs&quot;) -&gt; Int</code></pre>
+</div>
+<p>Remove GEOIDs from an existing set by creating a new version.</p>
+<p><strong>Arguments</strong></p>
+<ul class="md-list-tight">
+<li><p><code class="md-code-inline">set_name::String</code>: Name of the set</p>
+</li>
+<li><p><code class="md-code-inline">geoids::Vector{String}</code>: GEOIDs to remove</p>
+</li>
+<li><p><code class="md-code-inline">change_description::String</code>: Description of the change</p>
+</li>
+</ul>
+<p><strong>Returns</strong></p>
+<ul class="md-list-tight">
+<li><p><code class="md-code-inline">Int</code>: The new version number</p>
+</li>
+</ul>
+</div>
+</div>
+<h2 id="Version-Management" class="md-heading">Version Management<a href="#Version-Management" class="md-heading-anchor" aria-label="Link to this section">#</a></h2>
+<p>Functions for managing and comparing versions:</p>
+<div class="md-docstring" id="GeoIDs.Store.rollback_geoid_set">
+<div class="md-docstring-header">
+<h4 class="md-docstring-binding"><code>GeoIDs.Store.rollback_geoid_set</code></h4>
+<a class="md-docstring-source" href="https://github.com/technocrat/GeoIDs.jl/blob/cb80628dbd1667d1e14f53cd3489d59837c92467/src/store.jl#L389-L400" title="View source">source</a>
+</div>
+<div class="md-docstring-content">
+<div class="md-code-block">
+<button class="md-copy-btn" title="Copy to clipboard" aria-label="Copy code"><span class="md-copy-icon">⧉</span><span class="md-copy-feedback">Copied!</span></button>
+<pre><code class="language-julia">rollback_geoid_set(set_name::String, version::Int) -&gt; Int</code></pre>
+</div>
+<p>Rollback a GEOID set to a previous version by creating a new version.</p>
+<p><strong>Arguments</strong></p>
+<ul class="md-list-tight">
+<li><p><code class="md-code-inline">set_name::String</code>: Name of the set</p>
+</li>
+<li><p><code class="md-code-inline">version::Int</code>: Version to rollback to</p>
+</li>
+</ul>
+<p><strong>Returns</strong></p>
+<ul class="md-list-tight">
+<li><p><code class="md-code-inline">Int</code>: The new version number (after rollback)</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="md-docstring" id="GeoIDs.Store.compare_geoid_set_versions">
+<div class="md-docstring-header">
+<h4 class="md-docstring-binding"><code>GeoIDs.Store.compare_geoid_set_versions</code></h4>
+<a class="md-docstring-source" href="https://github.com/technocrat/GeoIDs.jl/blob/cb80628dbd1667d1e14f53cd3489d59837c92467/src/store.jl#L412-L424" title="View source">source</a>
+</div>
+<div class="md-docstring-content">
+<div class="md-code-block">
+<button class="md-copy-btn" title="Copy to clipboard" aria-label="Copy code"><span class="md-copy-icon">⧉</span><span class="md-copy-feedback">Copied!</span></button>
+<pre><code class="language-julia">compare_geoid_set_versions(set_name::String, version1::Int, version2::Int) -&gt; Dict</code></pre>
+</div>
+<p>Compare two versions of a GEOID set and return differences.</p>
+<p><strong>Arguments</strong></p>
+<ul class="md-list-tight">
+<li><p><code class="md-code-inline">set_name::String</code>: Name of the set</p>
+</li>
+<li><p><code class="md-code-inline">version1::Int</code>: First version to compare</p>
+</li>
+<li><p><code class="md-code-inline">version2::Int</code>: Second version to compare</p>
+</li>
+</ul>
+<p><strong>Returns</strong></p>
+<ul class="md-list-tight">
+<li><p><code class="md-code-inline">Dict</code>: Dictionary with &#39;added&#39;, &#39;removed&#39;, and &#39;common&#39; GEOIDs</p>
+</li>
+</ul>
+</div>
+</div>
+<h2 id="Deleting-GEOID-Sets" class="md-heading">Deleting GEOID Sets<a href="#Deleting-GEOID-Sets" class="md-heading-anchor" aria-label="Link to this section">#</a></h2>
+<div class="md-docstring" id="GeoIDs.Store.delete_geoid_set">
+<div class="md-docstring-header">
+<h4 class="md-docstring-binding"><code>GeoIDs.Store.delete_geoid_set</code></h4>
+<a class="md-docstring-source" href="https://github.com/technocrat/GeoIDs.jl/blob/cb80628dbd1667d1e14f53cd3489d59837c92467/src/store.jl#L347-L354" title="View source">source</a>
+</div>
+<div class="md-docstring-content">
+<div class="md-code-block">
+<button class="md-copy-btn" title="Copy to clipboard" aria-label="Copy code"><span class="md-copy-icon">⧉</span><span class="md-copy-feedback">Copied!</span></button>
+<pre><code class="language-julia">delete_geoid_set(set_name::String)</code></pre>
+</div>
+<p>Delete a GEOID set and all its versions.</p>
+<p><strong>Arguments</strong></p>
+<ul class="md-list-tight">
+<li><p><code class="md-code-inline">set_name::String</code>: Name of the set to delete</p>
+</li>
+</ul>
+</div>
+</div>
+<h2 id="Module-Index" class="md-heading">Module Index<a href="#Module-Index" class="md-heading-anchor" aria-label="Link to this section">#</a></h2>
+<div class="md-index">
+<ul>
+<li><a href="#GeoIDs.Store.add_to_geoid_set"><code>GeoIDs.Store.add_to_geoid_set</code></a></li>
+<li><a href="#GeoIDs.Store.compare_geoid_set_versions"><code>GeoIDs.Store.compare_geoid_set_versions</code></a></li>
+<li><a href="#GeoIDs.Store.create_geoid_set"><code>GeoIDs.Store.create_geoid_set</code></a></li>
+<li><a href="#GeoIDs.Store.create_geoid_set_version"><code>GeoIDs.Store.create_geoid_set_version</code></a></li>
+<li><a href="#GeoIDs.Store.delete_geoid_set"><code>GeoIDs.Store.delete_geoid_set</code></a></li>
+<li><a href="#GeoIDs.Store.get_geoid_set"><code>GeoIDs.Store.get_geoid_set</code></a></li>
+<li><a href="#GeoIDs.Store.get_geoid_set_version"><code>GeoIDs.Store.get_geoid_set_version</code></a></li>
+<li><a href="#GeoIDs.Store.list_geoid_set_versions"><code>GeoIDs.Store.list_geoid_set_versions</code></a></li>
+<li><a href="#GeoIDs.Store.list_geoid_sets"><code>GeoIDs.Store.list_geoid_sets</code></a></li>
+<li><a href="#GeoIDs.Store.remove_from_geoid_set"><code>GeoIDs.Store.remove_from_geoid_set</code></a></li>
+<li><a href="#GeoIDs.Store.rollback_geoid_set"><code>GeoIDs.Store.rollback_geoid_set</code></a></li>
+</ul>
+</div>
+<div class="md-code-block">
+<button class="md-copy-btn" title="Copy to clipboard" aria-label="Copy code"><span class="md-copy-icon">⧉</span><span class="md-copy-feedback">Copied!</span></button>
+<pre><code></code></pre>
+</div>
+      </article>
+      <footer class="md-footer">
+<p>Built with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and <a href="https://github.com/mthelm85/MaterialDocs.jl">MaterialDocs.jl</a>.</p>
+      </footer>
+    </main>
+    <aside class="md-toc">
+      <div class="md-toc-inner">
+        <p class="md-toc-title">On this page</p>
+          <a class="md-toc-link md-toc-h2" href="#Creating-GEOID-Sets">Creating GEOID Sets</a>
+          <a class="md-toc-link md-toc-h2" href="#Retrieving-GEOID-Sets">Retrieving GEOID Sets</a>
+          <a class="md-toc-link md-toc-h2" href="#Modifying-GEOID-Sets">Modifying GEOID Sets</a>
+          <a class="md-toc-link md-toc-h2" href="#Version-Management">Version Management</a>
+          <a class="md-toc-link md-toc-h2" href="#Deleting-GEOID-Sets">Deleting GEOID Sets</a>
+          <a class="md-toc-link md-toc-h2" href="#Module-Index">Module Index</a>
+      </div>
+    </aside>
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/julia.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/julia-repl.min.js"></script>
+  <script>hljs.highlightAll();</script>
+  <script src="../../siteinfo.js"></script>
+  <script src="../../../versions.js"></script>
+  <script src="../../assets/materialdocs.js?v=d05767eb"></script>
+</body>
+</html>
