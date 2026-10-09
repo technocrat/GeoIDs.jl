@@ -1,0 +1,382 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>GEOID Sets — GeoIDs.jl</title>
+  <link rel="stylesheet" href="../../assets/materialdocs.css?v=bcaf4b0c">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fira+Sans:wght@400;500;600;700&family=Source+Sans+3:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap">
+  <meta name="title" content="GEOID Sets — GeoIDs.jl">
+  <meta property="og:title" content="GEOID Sets — GeoIDs.jl">
+  <meta property="twitter:title" content="GEOID Sets — GeoIDs.jl">
+  <meta name="description" content="Documentation for GeoIDs.jl.">
+  <meta property="og:description" content="Documentation for GeoIDs.jl.">
+  <meta property="twitter:description" content="Documentation for GeoIDs.jl.">
+  <meta property="og:url" content="https://technocrat.github.io/GeoIDs.jl/guide/geoid-sets/">
+  <meta property="twitter:url" content="https://technocrat.github.io/GeoIDs.jl/guide/geoid-sets/">
+  <link rel="canonical" href="https://technocrat.github.io/GeoIDs.jl/guide/geoid-sets/">
+  <script>
+    (function(){
+      document.documentElement.classList.add('no-transition');
+      var t=localStorage.getItem('md-theme');if(t)document.documentElement.setAttribute('data-theme',t);
+      window.addEventListener('load',function(){setTimeout(function(){document.documentElement.classList.remove('no-transition');},50);});
+    })()
+  </script>
+</head>
+<body data-warn-outdated>
+  <header class="md-navbar">
+    <button id="md-hamburger" class="md-icon-btn md-hamburger" aria-label="Toggle navigation" aria-expanded="false"><svg class="md-icon" viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true" focusable="false"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg></button>
+    <span class="md-navbar-title">GeoIDs.jl</span>
+    <span class="md-navbar-spacer"></span>
+    <button id="md-search-btn" class="md-search-bar" aria-label="Search documentation" aria-expanded="false">
+      <svg class="md-icon md-search-bar-icon" viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true" focusable="false"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+      <span class="md-search-bar-label">Search docs</span>
+      <kbd class="md-search-bar-kbd">Ctrl K</kbd>
+    </button>
+    <div id="md-version" class="md-version" hidden>
+      <button id="md-version-btn" class="md-version-btn" aria-haspopup="listbox" aria-expanded="false" aria-label="Select documentation version">
+        <span id="md-version-current" class="md-version-current"></span>
+        <svg class="md-icon md-version-caret" viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true" focusable="false"><path d="M7 10l5 5 5-5z"/></svg>
+      </button>
+      <ul id="md-version-menu" class="md-version-menu" role="listbox" hidden></ul>
+    </div>
+    <a class="md-icon-btn md-repo-link" href="https://github.com/technocrat/GeoIDs.jl" title="View the repository on GitHub" aria-label="View the repository on GitHub" rel="noopener" target="_blank"><svg class="md-icon" viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true" focusable="false"><path d="M12 .3a12 12 0 00-3.8 23.4c.6.1.8-.3.8-.6v-2c-3.3.7-4-1.6-4-1.6-.6-1.4-1.4-1.8-1.4-1.8-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.8 1.3 3.5 1 0-.8.4-1.3.7-1.6-2.7-.3-5.5-1.3-5.5-6 0-1.2.5-2.3 1.3-3.1-.2-.4-.6-1.6.1-3.2 0 0 1-.3 3.3 1.2a11.5 11.5 0 016 0c2.3-1.5 3.3-1.2 3.3-1.2.7 1.6.2 2.8.1 3.2.8.8 1.3 1.9 1.3 3.2 0 4.6-2.8 5.6-5.5 5.9.5.4.9 1.1.9 2.2v3.3c0 .3.1.7.8.6A12 12 0 0012 .3z"/></svg><span class="md-repo-label">GitHub</span></a>
+    <button id="md-theme-toggle" class="md-icon-btn" title="Toggle dark mode" aria-label="Toggle dark mode"><svg class="md-icon md-icon-light" viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true" focusable="false"><path d="M12 7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zM2 13h2c.55 0 1-.45 1-1s-.45-1-1-1H2c-.55 0-1 .45-1 1s.45 1 1 1zm18 0h2c.55 0 1-.45 1-1s-.45-1-1-1h-2c-.55 0-1 .45-1 1s.45 1 1 1zM11 2v2c0 .55.45 1 1 1s1-.45 1-1V2c0-.55-.45-1-1-1s-1 .45-1 1zm0 18v2c0 .55.45 1 1 1s1-.45 1-1v-2c0-.55-.45-1-1-1s-1 .45-1 1zM5.99 4.58a.996.996 0 00-1.41 0 .996.996 0 000 1.41l1.06 1.06c.39.39 1.03.39 1.41 0s.39-1.03 0-1.41L5.99 4.58zm12.37 12.37a.996.996 0 00-1.41 0 .996.996 0 000 1.41l1.06 1.06c.39.39 1.03.39 1.41 0a.996.996 0 000-1.41l-1.06-1.06zm1.06-10.96a.996.996 0 000-1.41.996.996 0 00-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41s1.03.39 1.41 0l1.06-1.06zM7.05 18.36a.996.996 0 000-1.41.996.996 0 00-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41s1.03.39 1.41 0l1.06-1.06z"/></svg><svg class="md-icon md-icon-dark" viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true" focusable="false"><path d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9 9-4.03 9-9c0-.46-.04-.92-.1-1.36-.98 1.37-2.58 2.26-4.4 2.26-2.98 0-5.4-2.42-5.4-5.4 0-1.81.89-3.42 2.26-4.4-.44-.06-.9-.1-1.36-.1z"/></svg></button>
+  </header>
+  <div class="md-layout">
+    <nav class="md-sidebar">
+      <a href="../../">Home</a>
+      <div class="md-nav-section">
+        <span class="md-nav-section-title">User Guide</span>
+        <a href="../../guide/postgresql-setup/">PostgreSQL Setup</a>
+        <a href="../../guide/database-config/">Database Configuration</a>
+        <a href="../../guide/database-setup/">Database Setup</a>
+        <a href="../../guide/getting-started/">Getting Started</a>
+        <a href="../../guide/geoid-sets/" class="md-nav-active">GEOID Sets</a>
+        <a href="../../guide/spatial-filtering/">Spatial Filtering</a>
+        <a href="../../guide/set-operations/">Set Operations</a>
+        <a href="../../guide/versioning/">Versioning</a>
+      </div>
+      <div class="md-nav-section">
+        <span class="md-nav-section-title">API Reference</span>
+        <a href="../../api/core/">Core</a>
+        <a href="../../api/db/">DB</a>
+        <a href="../../api/store/">Store</a>
+        <a href="../../api/fetch/">Fetch</a>
+        <a href="../../api/operations/">Operations</a>
+        <a href="../../api/setup/">Setup</a>
+      </div>
+      <a href="../../contributing/">Contributing</a>
+    </nav>
+    <main class="md-content">
+      <article class="md-article">
+      <div class="md-article-actions"><a class="md-icon-btn md-edit-link" href="https://github.com/technocrat/GeoIDs.jl/blob/main/docs/src/guide/geoid-sets.md" title="Edit source on GitHub" aria-label="Edit source on GitHub"><svg class="md-icon" viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true" focusable="false"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04a.996.996 0 000-1.41l-2.34-2.34a.996.996 0 00-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg></a></div>
+<h1 id="GEOID-Sets" class="md-heading">GEOID Sets<a href="#GEOID-Sets" class="md-heading-anchor" aria-label="Link to this section">#</a></h1>
+<p>GEOID sets are collections of Census Geographic Identifiers (GEOIDs) that represent specific geographic areas. GeoIDs.jl allows you to create, manage, and version these sets for consistent geographic area definitions in your analyses.</p>
+<h2 id="What-are-GEOIDs?" class="md-heading">What are GEOIDs?<a href="#What-are-GEOIDs?" class="md-heading-anchor" aria-label="Link to this section">#</a></h2>
+<p>GEOIDs are unique identifiers assigned by the U.S. Census Bureau to identify geographic areas. For counties, a GEOID consists of:</p>
+<ul class="md-list-tight">
+<li><p>The first 2 digits represent the state FIPS code</p>
+</li>
+<li><p>The last 3 digits represent the county FIPS code</p>
+</li>
+</ul>
+<p>For example, <code class="md-code-inline">12086</code> represents:</p>
+<ul class="md-list-tight">
+<li><p><code class="md-code-inline">12</code>: Florida (state FIPS code)</p>
+</li>
+<li><p><code class="md-code-inline">086</code>: Miami-Dade County (county FIPS code)</p>
+</li>
+</ul>
+<h2 id="Creating-GEOID-Sets" class="md-heading">Creating GEOID Sets<a href="#Creating-GEOID-Sets" class="md-heading-anchor" aria-label="Link to this section">#</a></h2>
+<p>You can create a new GEOID set using the <code class="md-code-inline">create_geoid_set</code> function:</p>
+<div class="md-code-block">
+<button class="md-copy-btn" title="Copy to clipboard" aria-label="Copy code"><span class="md-copy-icon">⧉</span><span class="md-copy-feedback">Copied!</span></button>
+<pre><code class="language-julia"># Create a GEOID set for Florida counties
+florida_counties = get_geoids_by_state(&quot;FL&quot;)
+create_geoid_set(&quot;florida_counties&quot;, &quot;All counties in Florida&quot;, florida_counties)
+
+# Create an empty set that you can populate later
+create_geoid_set(&quot;southeast_region&quot;, &quot;Southeastern U.S. counties&quot;)</code></pre>
+</div>
+<h3 id="Function-Signature" class="md-heading">Function Signature<a href="#Function-Signature" class="md-heading-anchor" aria-label="Link to this section">#</a></h3>
+<div class="md-code-block">
+<button class="md-copy-btn" title="Copy to clipboard" aria-label="Copy code"><span class="md-copy-icon">⧉</span><span class="md-copy-feedback">Copied!</span></button>
+<pre><code class="language-julia">create_geoid_set(set_name::String, description::String=&quot;&quot;, geoids::Vector{String}=String[]) -&gt; Int</code></pre>
+</div>
+<ul class="md-list-tight">
+<li><p><code class="md-code-inline">set_name</code>: A unique name for the GEOID set</p>
+</li>
+<li><p><code class="md-code-inline">description</code>: Optional description of the set</p>
+</li>
+<li><p><code class="md-code-inline">geoids</code>: Optional initial list of GEOIDs to include in the set</p>
+</li>
+<li><p>Returns: The version number (1 for a new set)</p>
+</li>
+</ul>
+<h2 id="Retrieving-GEOID-Sets" class="md-heading">Retrieving GEOID Sets<a href="#Retrieving-GEOID-Sets" class="md-heading-anchor" aria-label="Link to this section">#</a></h2>
+<p>To get the current version of a GEOID set:</p>
+<div class="md-code-block">
+<button class="md-copy-btn" title="Copy to clipboard" aria-label="Copy code"><span class="md-copy-icon">⧉</span><span class="md-copy-feedback">Copied!</span></button>
+<pre><code class="language-julia"># Get all GEOIDs in the Florida counties set
+fl_geoids = get_geoid_set(&quot;florida_counties&quot;)</code></pre>
+</div>
+<p>To get a specific version:</p>
+<div class="md-code-block">
+<button class="md-copy-btn" title="Copy to clipboard" aria-label="Copy code"><span class="md-copy-icon">⧉</span><span class="md-copy-feedback">Copied!</span></button>
+<pre><code class="language-julia"># Get version 2 of the Florida counties set
+fl_geoids_v2 = get_geoid_set_version(&quot;florida_counties&quot;, 2)</code></pre>
+</div>
+<h2 id="Modifying-GEOID-Sets" class="md-heading">Modifying GEOID Sets<a href="#Modifying-GEOID-Sets" class="md-heading-anchor" aria-label="Link to this section">#</a></h2>
+<p>GeoIDs.jl maintains version history when you modify sets. Each modification creates a new version while preserving previous versions.</p>
+<h3 id="Adding-GEOIDs" class="md-heading">Adding GEOIDs<a href="#Adding-GEOIDs" class="md-heading-anchor" aria-label="Link to this section">#</a></h3>
+<div class="md-code-block">
+<button class="md-copy-btn" title="Copy to clipboard" aria-label="Copy code"><span class="md-copy-icon">⧉</span><span class="md-copy-feedback">Copied!</span></button>
+<pre><code class="language-julia"># Add Collier County to South Florida set
+new_version = add_to_geoid_set(&quot;south_florida&quot;, [&quot;12021&quot;], &quot;Added Collier County&quot;)</code></pre>
+</div>
+<h3 id="Removing-GEOIDs" class="md-heading">Removing GEOIDs<a href="#Removing-GEOIDs" class="md-heading-anchor" aria-label="Link to this section">#</a></h3>
+<div class="md-code-block">
+<button class="md-copy-btn" title="Copy to clipboard" aria-label="Copy code"><span class="md-copy-icon">⧉</span><span class="md-copy-feedback">Copied!</span></button>
+<pre><code class="language-julia"># Remove Miami-Dade County from South Florida set
+new_version = remove_from_geoid_set(&quot;south_florida&quot;, [&quot;12086&quot;], &quot;Removed Miami-Dade County&quot;)</code></pre>
+</div>
+<h2 id="Listing-GEOID-Sets" class="md-heading">Listing GEOID Sets<a href="#Listing-GEOID-Sets" class="md-heading-anchor" aria-label="Link to this section">#</a></h2>
+<p>To view all available GEOID sets:</p>
+<div class="md-code-block">
+<button class="md-copy-btn" title="Copy to clipboard" aria-label="Copy code"><span class="md-copy-icon">⧉</span><span class="md-copy-feedback">Copied!</span></button>
+<pre><code class="language-julia">sets = list_geoid_sets()</code></pre>
+</div>
+<p>The result is a DataFrame with columns:</p>
+<ul class="md-list-tight">
+<li><p><code class="md-code-inline">set_name</code>: Name of the GEOID set</p>
+</li>
+<li><p><code class="md-code-inline">description</code>: Description of the set</p>
+</li>
+<li><p><code class="md-code-inline">version</code>: Current version number</p>
+</li>
+<li><p><code class="md-code-inline">member_count</code>: Number of GEOIDs in the set</p>
+</li>
+<li><p><code class="md-code-inline">created_at</code>: When the set was created</p>
+</li>
+<li><p><code class="md-code-inline">updated_at</code>: When the set was last updated</p>
+</li>
+</ul>
+<h2 id="Working-with-Versions" class="md-heading">Working with Versions<a href="#Working-with-Versions" class="md-heading-anchor" aria-label="Link to this section">#</a></h2>
+<p>GeoIDs.jl maintains complete version history for all GEOID sets.</p>
+<h3 id="Listing-Versions" class="md-heading">Listing Versions<a href="#Listing-Versions" class="md-heading-anchor" aria-label="Link to this section">#</a></h3>
+<p>To view all versions of a specific GEOID set:</p>
+<div class="md-code-block">
+<button class="md-copy-btn" title="Copy to clipboard" aria-label="Copy code"><span class="md-copy-icon">⧉</span><span class="md-copy-feedback">Copied!</span></button>
+<pre><code class="language-julia">versions = list_geoid_set_versions(&quot;south_florida&quot;)</code></pre>
+</div>
+<p>The result includes:</p>
+<ul class="md-list-tight">
+<li><p><code class="md-code-inline">version</code>: Version number</p>
+</li>
+<li><p><code class="md-code-inline">description</code>: Set description</p>
+</li>
+<li><p><code class="md-code-inline">member_count</code>: Number of GEOIDs in this version</p>
+</li>
+<li><p><code class="md-code-inline">created_at</code>: When this version was created</p>
+</li>
+<li><p><code class="md-code-inline">is_current</code>: Whether this is the current version</p>
+</li>
+<li><p><code class="md-code-inline">additions</code>: Number of GEOIDs added in this version</p>
+</li>
+<li><p><code class="md-code-inline">removals</code>: Number of GEOIDs removed in this version</p>
+</li>
+<li><p><code class="md-code-inline">change_description</code>: Description of changes made</p>
+</li>
+</ul>
+<h3 id="Rolling-Back-to-Previous-Versions" class="md-heading">Rolling Back to Previous Versions<a href="#Rolling-Back-to-Previous-Versions" class="md-heading-anchor" aria-label="Link to this section">#</a></h3>
+<p>You can revert to a previous version:</p>
+<div class="md-code-block">
+<button class="md-copy-btn" title="Copy to clipboard" aria-label="Copy code"><span class="md-copy-icon">⧉</span><span class="md-copy-feedback">Copied!</span></button>
+<pre><code class="language-julia"># Roll back to version 1
+new_version = rollback_geoid_set(&quot;south_florida&quot;, 1)</code></pre>
+</div>
+<p>This creates a new version that matches the specified version&#39;s content.</p>
+<h3 id="Comparing-Versions" class="md-heading">Comparing Versions<a href="#Comparing-Versions" class="md-heading-anchor" aria-label="Link to this section">#</a></h3>
+<p>To compare two versions of a GEOID set:</p>
+<div class="md-code-block">
+<button class="md-copy-btn" title="Copy to clipboard" aria-label="Copy code"><span class="md-copy-icon">⧉</span><span class="md-copy-feedback">Copied!</span></button>
+<pre><code class="language-julia">comparison = compare_geoid_set_versions(&quot;south_florida&quot;, 1, 3)</code></pre>
+</div>
+<p>The result is a dictionary with keys:</p>
+<ul class="md-list-tight">
+<li><p><code class="md-code-inline">added</code>: GEOIDs present in version 3 but not in version 1</p>
+</li>
+<li><p><code class="md-code-inline">removed</code>: GEOIDs present in version 1 but not in version 3</p>
+</li>
+</ul>
+<h2 id="Deleting-GEOID-Sets" class="md-heading">Deleting GEOID Sets<a href="#Deleting-GEOID-Sets" class="md-heading-anchor" aria-label="Link to this section">#</a></h2>
+<p>To permanently delete a GEOID set and all its versions:</p>
+<div class="md-code-block">
+<button class="md-copy-btn" title="Copy to clipboard" aria-label="Copy code"><span class="md-copy-icon">⧉</span><span class="md-copy-feedback">Copied!</span></button>
+<pre><code class="language-julia">delete_geoid_set(&quot;temp_analysis&quot;)</code></pre>
+</div>
+<h2 id="Database-Schema" class="md-heading">Database Schema<a href="#Database-Schema" class="md-heading-anchor" aria-label="Link to this section">#</a></h2>
+<p>GEOID sets are stored in three tables:</p>
+<h3 id="census.geoid_sets" class="md-heading">census.geoid_sets<a href="#census.geoid_sets" class="md-heading-anchor" aria-label="Link to this section">#</a></h3>
+<p>Stores metadata about GEOID sets and their versions:</p>
+<div class="md-table-wrap">
+<table class="md-table">
+<thead>
+<tr>
+<th style="text-align:right">Column</th>
+<th style="text-align:right">Type</th>
+<th style="text-align:right">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right">set_name</td>
+<td style="text-align:right">VARCHAR(100)</td>
+<td style="text-align:right">Name of the GEOID set</td>
+</tr>
+<tr>
+<td style="text-align:right">version</td>
+<td style="text-align:right">INT</td>
+<td style="text-align:right">Version number</td>
+</tr>
+<tr>
+<td style="text-align:right">description</td>
+<td style="text-align:right">TEXT</td>
+<td style="text-align:right">Description of the set</td>
+</tr>
+<tr>
+<td style="text-align:right">created_at</td>
+<td style="text-align:right">TIMESTAMP</td>
+<td style="text-align:right">Creation timestamp</td>
+</tr>
+<tr>
+<td style="text-align:right">updated_at</td>
+<td style="text-align:right">TIMESTAMP</td>
+<td style="text-align:right">Last update timestamp</td>
+</tr>
+<tr>
+<td style="text-align:right">is_current</td>
+<td style="text-align:right">BOOLEAN</td>
+<td style="text-align:right">Whether this is the current version</td>
+</tr>
+<tr>
+<td style="text-align:right">parent_version</td>
+<td style="text-align:right">INT</td>
+<td style="text-align:right">Previous version this was derived from</td>
+</tr>
+<tr>
+<td style="text-align:right">change_description</td>
+<td style="text-align:right">TEXT</td>
+<td style="text-align:right">Description of changes from parent</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h3 id="census.geoid*set*members" class="md-heading">census.geoid<em>set</em>members<a href="#census.geoid*set*members" class="md-heading-anchor" aria-label="Link to this section">#</a></h3>
+<p>Stores the actual GEOIDs in each set version:</p>
+<div class="md-table-wrap">
+<table class="md-table">
+<thead>
+<tr>
+<th style="text-align:right">Column</th>
+<th style="text-align:right">Type</th>
+<th style="text-align:right">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right">set_name</td>
+<td style="text-align:right">VARCHAR(100)</td>
+<td style="text-align:right">Name of the GEOID set</td>
+</tr>
+<tr>
+<td style="text-align:right">version</td>
+<td style="text-align:right">INT</td>
+<td style="text-align:right">Version number</td>
+</tr>
+<tr>
+<td style="text-align:right">geoid</td>
+<td style="text-align:right">VARCHAR(5)</td>
+<td style="text-align:right">The GEOID value</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h3 id="census.geoid*set*changes" class="md-heading">census.geoid<em>set</em>changes<a href="#census.geoid*set*changes" class="md-heading-anchor" aria-label="Link to this section">#</a></h3>
+<p>Tracks changes between versions:</p>
+<div class="md-table-wrap">
+<table class="md-table">
+<thead>
+<tr>
+<th style="text-align:right">Column</th>
+<th style="text-align:right">Type</th>
+<th style="text-align:right">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right">set_name</td>
+<td style="text-align:right">VARCHAR(100)</td>
+<td style="text-align:right">Name of the GEOID set</td>
+</tr>
+<tr>
+<td style="text-align:right">version</td>
+<td style="text-align:right">INT</td>
+<td style="text-align:right">Version number</td>
+</tr>
+<tr>
+<td style="text-align:right">change_type</td>
+<td style="text-align:right">VARCHAR(10)</td>
+<td style="text-align:right">&#39;ADDED&#39; or &#39;REMOVED&#39;</td>
+</tr>
+<tr>
+<td style="text-align:right">geoid</td>
+<td style="text-align:right">VARCHAR(5)</td>
+<td style="text-align:right">The GEOID that changed</td>
+</tr>
+<tr>
+<td style="text-align:right">changed_at</td>
+<td style="text-align:right">TIMESTAMP</td>
+<td style="text-align:right">When the change occurred</td>
+</tr>
+</tbody>
+</table>
+</div>
+      </article>
+      <footer class="md-footer">
+<p>Built with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and <a href="https://github.com/mthelm85/MaterialDocs.jl">MaterialDocs.jl</a>.</p>
+      </footer>
+    </main>
+    <aside class="md-toc">
+      <div class="md-toc-inner">
+        <p class="md-toc-title">On this page</p>
+          <a class="md-toc-link md-toc-h2" href="#What-are-GEOIDs?">What are GEOIDs?</a>
+          <a class="md-toc-link md-toc-h2" href="#Creating-GEOID-Sets">Creating GEOID Sets</a>
+            <a class="md-toc-link md-toc-h3" href="#Function-Signature">Function Signature</a>
+          <a class="md-toc-link md-toc-h2" href="#Retrieving-GEOID-Sets">Retrieving GEOID Sets</a>
+          <a class="md-toc-link md-toc-h2" href="#Modifying-GEOID-Sets">Modifying GEOID Sets</a>
+            <a class="md-toc-link md-toc-h3" href="#Adding-GEOIDs">Adding GEOIDs</a>
+            <a class="md-toc-link md-toc-h3" href="#Removing-GEOIDs">Removing GEOIDs</a>
+          <a class="md-toc-link md-toc-h2" href="#Listing-GEOID-Sets">Listing GEOID Sets</a>
+          <a class="md-toc-link md-toc-h2" href="#Working-with-Versions">Working with Versions</a>
+            <a class="md-toc-link md-toc-h3" href="#Listing-Versions">Listing Versions</a>
+            <a class="md-toc-link md-toc-h3" href="#Rolling-Back-to-Previous-Versions">Rolling Back to Previous Versions</a>
+            <a class="md-toc-link md-toc-h3" href="#Comparing-Versions">Comparing Versions</a>
+          <a class="md-toc-link md-toc-h2" href="#Deleting-GEOID-Sets">Deleting GEOID Sets</a>
+          <a class="md-toc-link md-toc-h2" href="#Database-Schema">Database Schema</a>
+            <a class="md-toc-link md-toc-h3" href="#census.geoid_sets">census.geoid_sets</a>
+            <a class="md-toc-link md-toc-h3" href="#census.geoid*set*members">census.geoidsetmembers</a>
+            <a class="md-toc-link md-toc-h3" href="#census.geoid*set*changes">census.geoidsetchanges</a>
+      </div>
+    </aside>
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/julia.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/julia-repl.min.js"></script>
+  <script>hljs.highlightAll();</script>
+  <script src="../../siteinfo.js"></script>
+  <script src="../../../versions.js"></script>
+  <script src="../../assets/materialdocs.js?v=bcaf4b0c"></script>
+</body>
+</html>

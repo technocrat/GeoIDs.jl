@@ -1,0 +1,353 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>GeoIDs.jl — GeoIDs.jl</title>
+  <link rel="stylesheet" href="./assets/materialdocs.css?v=8835c429">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fira+Sans:wght@400;500;600;700&family=Source+Sans+3:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap">
+  <meta name="title" content="GeoIDs.jl — GeoIDs.jl">
+  <meta property="og:title" content="GeoIDs.jl — GeoIDs.jl">
+  <meta property="twitter:title" content="GeoIDs.jl — GeoIDs.jl">
+  <meta name="description" content="Documentation for GeoIDs.jl.">
+  <meta property="og:description" content="Documentation for GeoIDs.jl.">
+  <meta property="twitter:description" content="Documentation for GeoIDs.jl.">
+  <meta property="og:url" content="https://technocrat.github.io/GeoIDs.jl/">
+  <meta property="twitter:url" content="https://technocrat.github.io/GeoIDs.jl/">
+  <link rel="canonical" href="https://technocrat.github.io/GeoIDs.jl/">
+  <script>
+    (function(){
+      document.documentElement.classList.add('no-transition');
+      var t=localStorage.getItem('md-theme');if(t)document.documentElement.setAttribute('data-theme',t);
+      window.addEventListener('load',function(){setTimeout(function(){document.documentElement.classList.remove('no-transition');},50);});
+    })()
+  </script>
+</head>
+<body data-warn-outdated>
+  <header class="md-navbar">
+    <button id="md-hamburger" class="md-icon-btn md-hamburger" aria-label="Toggle navigation" aria-expanded="false"><svg class="md-icon" viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true" focusable="false"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg></button>
+    <span class="md-navbar-title">GeoIDs.jl</span>
+    <span class="md-navbar-spacer"></span>
+    <button id="md-search-btn" class="md-search-bar" aria-label="Search documentation" aria-expanded="false">
+      <svg class="md-icon md-search-bar-icon" viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true" focusable="false"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+      <span class="md-search-bar-label">Search docs</span>
+      <kbd class="md-search-bar-kbd">Ctrl K</kbd>
+    </button>
+    <div id="md-version" class="md-version" hidden>
+      <button id="md-version-btn" class="md-version-btn" aria-haspopup="listbox" aria-expanded="false" aria-label="Select documentation version">
+        <span id="md-version-current" class="md-version-current"></span>
+        <svg class="md-icon md-version-caret" viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true" focusable="false"><path d="M7 10l5 5 5-5z"/></svg>
+      </button>
+      <ul id="md-version-menu" class="md-version-menu" role="listbox" hidden></ul>
+    </div>
+    <a class="md-icon-btn md-repo-link" href="https://github.com/technocrat/GeoIDs.jl" title="View the repository on GitHub" aria-label="View the repository on GitHub" rel="noopener" target="_blank"><svg class="md-icon" viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true" focusable="false"><path d="M12 .3a12 12 0 00-3.8 23.4c.6.1.8-.3.8-.6v-2c-3.3.7-4-1.6-4-1.6-.6-1.4-1.4-1.8-1.4-1.8-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.8 1.3 3.5 1 0-.8.4-1.3.7-1.6-2.7-.3-5.5-1.3-5.5-6 0-1.2.5-2.3 1.3-3.1-.2-.4-.6-1.6.1-3.2 0 0 1-.3 3.3 1.2a11.5 11.5 0 016 0c2.3-1.5 3.3-1.2 3.3-1.2.7 1.6.2 2.8.1 3.2.8.8 1.3 1.9 1.3 3.2 0 4.6-2.8 5.6-5.5 5.9.5.4.9 1.1.9 2.2v3.3c0 .3.1.7.8.6A12 12 0 0012 .3z"/></svg><span class="md-repo-label">GitHub</span></a>
+    <button id="md-theme-toggle" class="md-icon-btn" title="Toggle dark mode" aria-label="Toggle dark mode"><svg class="md-icon md-icon-light" viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true" focusable="false"><path d="M12 7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zM2 13h2c.55 0 1-.45 1-1s-.45-1-1-1H2c-.55 0-1 .45-1 1s.45 1 1 1zm18 0h2c.55 0 1-.45 1-1s-.45-1-1-1h-2c-.55 0-1 .45-1 1s.45 1 1 1zM11 2v2c0 .55.45 1 1 1s1-.45 1-1V2c0-.55-.45-1-1-1s-1 .45-1 1zm0 18v2c0 .55.45 1 1 1s1-.45 1-1v-2c0-.55-.45-1-1-1s-1 .45-1 1zM5.99 4.58a.996.996 0 00-1.41 0 .996.996 0 000 1.41l1.06 1.06c.39.39 1.03.39 1.41 0s.39-1.03 0-1.41L5.99 4.58zm12.37 12.37a.996.996 0 00-1.41 0 .996.996 0 000 1.41l1.06 1.06c.39.39 1.03.39 1.41 0a.996.996 0 000-1.41l-1.06-1.06zm1.06-10.96a.996.996 0 000-1.41.996.996 0 00-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41s1.03.39 1.41 0l1.06-1.06zM7.05 18.36a.996.996 0 000-1.41.996.996 0 00-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41s1.03.39 1.41 0l1.06-1.06z"/></svg><svg class="md-icon md-icon-dark" viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true" focusable="false"><path d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9 9-4.03 9-9c0-.46-.04-.92-.1-1.36-.98 1.37-2.58 2.26-4.4 2.26-2.98 0-5.4-2.42-5.4-5.4 0-1.81.89-3.42 2.26-4.4-.44-.06-.9-.1-1.36-.1z"/></svg></button>
+  </header>
+  <div class="md-layout">
+    <nav class="md-sidebar">
+      <a href="./" class="md-nav-active">Home</a>
+      <div class="md-nav-section">
+        <span class="md-nav-section-title">User Guide</span>
+        <a href="./guide/postgresql-setup/">PostgreSQL Setup</a>
+        <a href="./guide/database-config/">Database Configuration</a>
+        <a href="./guide/database-setup/">Database Setup</a>
+        <a href="./guide/getting-started/">Getting Started</a>
+        <a href="./guide/geoid-sets/">GEOID Sets</a>
+        <a href="./guide/spatial-filtering/">Spatial Filtering</a>
+        <a href="./guide/set-operations/">Set Operations</a>
+        <a href="./guide/versioning/">Versioning</a>
+      </div>
+      <div class="md-nav-section">
+        <span class="md-nav-section-title">API Reference</span>
+        <a href="./api/core/">Core</a>
+        <a href="./api/db/">DB</a>
+        <a href="./api/store/">Store</a>
+        <a href="./api/fetch/">Fetch</a>
+        <a href="./api/operations/">Operations</a>
+        <a href="./api/setup/">Setup</a>
+      </div>
+      <a href="./contributing/">Contributing</a>
+    </nav>
+    <main class="md-content">
+      <article class="md-article">
+      <div class="md-article-actions"><a class="md-icon-btn md-edit-link" href="https://github.com/technocrat/GeoIDs.jl/blob/main/docs/src/index.md" title="Edit source on GitHub" aria-label="Edit source on GitHub"><svg class="md-icon" viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true" focusable="false"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04a.996.996 0 000-1.41l-2.34-2.34a.996.996 0 00-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg></a></div>
+<h1 id="GeoIDs.jl" class="md-heading">GeoIDs.jl<a href="#GeoIDs.jl" class="md-heading-anchor" aria-label="Link to this section">#</a></h1>
+<p>A Julia package for managing, storing, and manipulating geographic GEOID sets with versioning support.</p>
+<h2 id="Overview" class="md-heading">Overview<a href="#Overview" class="md-heading-anchor" aria-label="Link to this section">#</a></h2>
+<p>GeoIDs.jl provides a comprehensive solution for working with Census GEOID identifiers, particularly at the county level. The package enables you to:</p>
+<ul class="md-list-tight">
+<li><p><strong>Create and Manage Geographic Area Sets</strong>: Define sets of counties for analysis</p>
+</li>
+<li><p><strong>Track Changes Over Time</strong>: Full version history for every geographic definition</p>
+</li>
+<li><p><strong>Apply Set Operations</strong>: Union, intersection, difference, and symmetric difference</p>
+</li>
+<li><p><strong>Filter Spatially</strong>: Select counties by latitude, longitude, distance, or bounding box</p>
+</li>
+<li><p><strong>Back Up and Restore</strong>: Export and import full version history</p>
+</li>
+<li><p><strong>Access Census Data</strong>: Integrate with TIGER/Line shapefiles from local sources</p>
+</li>
+</ul>
+<h2 id="Prerequisites" class="md-heading">Prerequisites<a href="#Prerequisites" class="md-heading-anchor" aria-label="Link to this section">#</a></h2>
+<p>GeoIDs.jl requires:</p>
+<ul class="md-list-tight">
+<li><p><strong>PostgreSQL</strong> database server (version 12 or higher)</p>
+</li>
+<li><p><strong>PostGIS</strong> extension (version 3.0 or higher)</p>
+</li>
+<li><p><strong>Local TIGER/Line shapefiles</strong> in the GeoIDs.jl/data directory</p>
+</li>
+</ul>
+<blockquote class="md-blockquote">
+<p><strong>Important</strong>: Before using GeoIDs.jl, follow our <a href="./guide/postgresql-setup/">PostgreSQL Setup Guide</a> to install and configure these prerequisites.</p>
+</blockquote>
+<blockquote class="md-blockquote">
+<p><strong>Note</strong>: GeoIDs.jl now uses PostgreSQL&#39;s default socket authentication which doesn&#39;t require username and password on local development setups.</p>
+</blockquote>
+<h2 id="Installation" class="md-heading">Installation<a href="#Installation" class="md-heading-anchor" aria-label="Link to this section">#</a></h2>
+<div class="md-code-block">
+<button class="md-copy-btn" title="Copy to clipboard" aria-label="Copy code"><span class="md-copy-icon">⧉</span><span class="md-copy-feedback">Copied!</span></button>
+<pre><code class="language-julia">import Pkg
+Pkg.add(url=&quot;https://github.com/technocrat/GeoIDs.jl.git&quot;)</code></pre>
+</div>
+<h2 id="Quick-Start" class="md-heading">Quick Start<a href="#Quick-Start" class="md-heading-anchor" aria-label="Link to this section">#</a></h2>
+<h3 id="1.-Set-Up-the-Database" class="md-heading">1. Set Up the Database<a href="#1.-Set-Up-the-Database" class="md-heading-anchor" aria-label="Link to this section">#</a></h3>
+<div class="md-code-block">
+<button class="md-copy-btn" title="Copy to clipboard" aria-label="Copy code"><span class="md-copy-icon">⧉</span><span class="md-copy-feedback">Copied!</span></button>
+<pre><code class="language-julia">using GeoIDs
+
+# Initialize the database (only needed once)
+initialize_database()</code></pre>
+</div>
+<p>This will automatically use the local TIGER/Line shapefile from the GeoIDs.jl/data directory and initialize the database schema.</p>
+<h3 id="2.-Create-GEOID-Sets" class="md-heading">2. Create GEOID Sets<a href="#2.-Create-GEOID-Sets" class="md-heading-anchor" aria-label="Link to this section">#</a></h3>
+<div class="md-code-block">
+<button class="md-copy-btn" title="Copy to clipboard" aria-label="Copy code"><span class="md-copy-icon">⧉</span><span class="md-copy-feedback">Copied!</span></button>
+<pre><code class="language-julia"># Get all Florida counties
+florida_counties = get_geoids_by_state(&quot;FL&quot;)
+create_geoid_set(&quot;florida_counties&quot;, &quot;All counties in Florida&quot;, florida_counties)
+
+# Filter for southern Florida counties
+south_fl = get_geoids_by_spatial_filter(:latitude, Dict(
+    &quot;min_lat&quot; =&gt; 25.0,
+    &quot;max_lat&quot; =&gt; 27.0
+))
+create_geoid_set(&quot;south_florida&quot;, &quot;Southern Florida counties&quot;, south_fl)</code></pre>
+</div>
+<h3 id="3.-Perform-Set-Operations" class="md-heading">3. Perform Set Operations<a href="#3.-Perform-Set-Operations" class="md-heading-anchor" aria-label="Link to this section">#</a></h3>
+<div class="md-code-block">
+<button class="md-copy-btn" title="Copy to clipboard" aria-label="Copy code"><span class="md-copy-icon">⧉</span><span class="md-copy-feedback">Copied!</span></button>
+<pre><code class="language-julia"># Get counties in Florida but not in South Florida
+central_fl = difference_geoid_sets(
+    &quot;florida_counties&quot;, 
+    &quot;south_florida&quot;, 
+    &quot;central_florida&quot;
+)
+
+# Get coastal counties in Florida
+coastal_fl = intersect_geoid_sets(
+    [&quot;florida_counties&quot;, &quot;coastal_counties&quot;],
+    &quot;florida_coastal&quot;
+)</code></pre>
+</div>
+<h3 id="4.-List-and-Manage-Sets" class="md-heading">4. List and Manage Sets<a href="#4.-List-and-Manage-Sets" class="md-heading-anchor" aria-label="Link to this section">#</a></h3>
+<div class="md-code-block">
+<button class="md-copy-btn" title="Copy to clipboard" aria-label="Copy code"><span class="md-copy-icon">⧉</span><span class="md-copy-feedback">Copied!</span></button>
+<pre><code class="language-julia"># List all available GEOID sets
+sets = list_geoid_sets()
+
+# View version history of a set
+versions = list_geoid_set_versions(&quot;south_florida&quot;)
+
+# Add a county to a set
+new_version = add_to_geoid_set(&quot;south_florida&quot;, [&quot;12021&quot;])  # Add Collier County
+
+# Revert to a previous version
+rollback_geoid_set(&quot;south_florida&quot;, 1)</code></pre>
+</div>
+<h2 id="Documentation" class="md-heading">Documentation<a href="#Documentation" class="md-heading-anchor" aria-label="Link to this section">#</a></h2>
+<h3 id="User-Guides" class="md-heading">User Guides<a href="#User-Guides" class="md-heading-anchor" aria-label="Link to this section">#</a></h3>
+<nav class="md-contents">
+<ul>
+<li><a href="./guide/postgresql-setup/#Setting-up-PostgreSQL">Setting up PostgreSQL</a></li>
+<li><a href="./guide/postgresql-setup/#Database-Authentication">Database Authentication</a></li>
+<li><a href="./guide/postgresql-setup/#macOS-Setup">macOS Setup</a></li>
+<li><a href="./guide/postgresql-setup/#Ubuntu-Setup">Ubuntu Setup</a></li>
+<li><a href="./guide/postgresql-setup/#Installing-PostGIS-Extension">Installing PostGIS Extension</a></li>
+<li><a href="./guide/postgresql-setup/#Post-Installation-Configuration">Post-Installation Configuration</a></li>
+<li><a href="./guide/postgresql-setup/#Common-Troubleshooting">Common Troubleshooting</a></li>
+<li><a href="./guide/postgresql-setup/#Next-Steps">Next Steps</a></li>
+<li><a href="./guide/database-config/#Database-Configuration">Database Configuration</a></li>
+<li><a href="./guide/database-config/#Environment-Variables">Environment Variables</a></li>
+<li><a href="./guide/database-config/#Setting-Environment-Variables">Setting Environment Variables</a></li>
+<li><a href="./guide/database-config/#Connection-String-Format">Connection String Format</a></li>
+<li><a href="./guide/database-config/#Database-Setup">Database Setup</a></li>
+<li><a href="./guide/database-setup/#Database-Setup">Database Setup</a></li>
+<li><a href="./guide/database-setup/#Automatic-Setup">Automatic Setup</a></li>
+<li><a href="./guide/database-setup/#Manual-Setup">Manual Setup</a></li>
+<li><a href="./guide/database-setup/#Required-Database-Tables">Required Database Tables</a></li>
+<li><a href="./guide/database-setup/#Local-Shapefile-Usage">Local Shapefile Usage</a></li>
+<li><a href="./guide/database-setup/#Checking-the-Database">Checking the Database</a></li>
+<li><a href="./guide/database-setup/#Creating-the-Database">Creating the Database</a></li>
+<li><a href="./guide/getting-started/#Getting-Started">Getting Started</a></li>
+<li><a href="./guide/getting-started/#Installation">Installation</a></li>
+<li><a href="./guide/getting-started/#Setup">Setup</a></li>
+<li><a href="./guide/getting-started/#Basic-Usage">Basic Usage</a></li>
+<li><a href="./guide/getting-started/#Next-Steps">Next Steps</a></li>
+<li><a href="./guide/geoid-sets/#GEOID-Sets">GEOID Sets</a></li>
+<li><a href="./guide/geoid-sets/#What-are-GEOIDs?">What are GEOIDs?</a></li>
+<li><a href="./guide/geoid-sets/#Creating-GEOID-Sets">Creating GEOID Sets</a></li>
+<li><a href="./guide/geoid-sets/#Retrieving-GEOID-Sets">Retrieving GEOID Sets</a></li>
+<li><a href="./guide/geoid-sets/#Modifying-GEOID-Sets">Modifying GEOID Sets</a></li>
+<li><a href="./guide/geoid-sets/#Listing-GEOID-Sets">Listing GEOID Sets</a></li>
+<li><a href="./guide/geoid-sets/#Working-with-Versions">Working with Versions</a></li>
+<li><a href="./guide/geoid-sets/#Deleting-GEOID-Sets">Deleting GEOID Sets</a></li>
+<li><a href="./guide/geoid-sets/#Database-Schema">Database Schema</a></li>
+<li><a href="./guide/spatial-filtering/#Spatial-Filtering">Spatial Filtering</a></li>
+<li><a href="./guide/spatial-filtering/#Basic-Usage">Basic Usage</a></li>
+<li><a href="./guide/spatial-filtering/#Filter-Types">Filter Types</a></li>
+<li><a href="./guide/spatial-filtering/#Helper-Functions">Helper Functions</a></li>
+<li><a href="./guide/spatial-filtering/#Technical-Details">Technical Details</a></li>
+<li><a href="./guide/spatial-filtering/#Performance-Considerations">Performance Considerations</a></li>
+<li><a href="./guide/set-operations/#Set-Operations">Set Operations</a></li>
+<li><a href="./guide/set-operations/#Available-Operations">Available Operations</a></li>
+<li><a href="./guide/set-operations/#Union-Operation">Union Operation</a></li>
+<li><a href="./guide/set-operations/#Intersection-Operation">Intersection Operation</a></li>
+<li><a href="./guide/set-operations/#Difference-Operation">Difference Operation</a></li>
+<li><a href="./guide/set-operations/#Symmetric-Difference-Operation">Symmetric Difference Operation</a></li>
+<li><a href="./guide/set-operations/#Combining-Operations">Combining Operations</a></li>
+<li><a href="./guide/set-operations/#Persistence-and-Versioning">Persistence and Versioning</a></li>
+<li><a href="./guide/versioning/#Versioning-System">Versioning System</a></li>
+<li><a href="./guide/versioning/#How-Versioning-Works">How Versioning Works</a></li>
+<li><a href="./guide/versioning/#Version-Anatomy">Version Anatomy</a></li>
+<li><a href="./guide/versioning/#Listing-Versions">Listing Versions</a></li>
+<li><a href="./guide/versioning/#Accessing-Specific-Versions">Accessing Specific Versions</a></li>
+<li><a href="./guide/versioning/#Comparing-Versions">Comparing Versions</a></li>
+<li><a href="./guide/versioning/#Rolling-Back-to-Previous-Versions">Rolling Back to Previous Versions</a></li>
+<li><a href="./guide/versioning/#Creating-New-Versions-Manually">Creating New Versions Manually</a></li>
+<li><a href="./guide/versioning/#Tracking-Changes">Tracking Changes</a></li>
+<li><a href="./guide/versioning/#Database-Schema">Database Schema</a></li>
+<li><a href="./guide/versioning/#Backup-and-Restore">Backup and Restore</a></li>
+<li><a href="./guide/versioning/#Use-Cases-for-Versioning">Use Cases for Versioning</a></li>
+</ul>
+</nav>
+<h3 id="API-Reference" class="md-heading">API Reference<a href="#API-Reference" class="md-heading-anchor" aria-label="Link to this section">#</a></h3>
+<nav class="md-contents">
+<ul>
+<li><a href="./api/core/#Core-Module">Core Module</a></li>
+<li><a href="./api/core/#Predefined-Constants">Predefined Constants</a></li>
+<li><a href="./api/core/#Initialization-Functions">Initialization Functions</a></li>
+<li><a href="./api/core/#Backup-and-Restore">Backup and Restore</a></li>
+<li><a href="./api/core/#Module-Index">Module Index</a></li>
+<li><a href="./api/db/#Database-Module">Database Module</a></li>
+<li><a href="./api/db/#Database-Connection">Database Connection</a></li>
+<li><a href="./api/db/#Connection-String-Format">Connection String Format</a></li>
+<li><a href="./api/db/#Query-Execution">Query Execution</a></li>
+<li><a href="./api/db/#Schema-Management">Schema Management</a></li>
+<li><a href="./api/db/#Module-Index">Module Index</a></li>
+<li><a href="./api/setup/#Setup-Module">Setup Module</a></li>
+<li><a href="./api/setup/#Database-Initialization">Database Initialization</a></li>
+<li><a href="./api/setup/#Schema-Setup">Schema Setup</a></li>
+<li><a href="./api/setup/#Census-Data-Management">Census Data Management</a></li>
+<li><a href="./api/setup/#Module-Index">Module Index</a></li>
+<li><a href="./api/store/#Store-Module">Store Module</a></li>
+<li><a href="./api/store/#Creating-GEOID-Sets">Creating GEOID Sets</a></li>
+<li><a href="./api/store/#Retrieving-GEOID-Sets">Retrieving GEOID Sets</a></li>
+<li><a href="./api/store/#Modifying-GEOID-Sets">Modifying GEOID Sets</a></li>
+<li><a href="./api/store/#Version-Management">Version Management</a></li>
+<li><a href="./api/store/#Deleting-GEOID-Sets">Deleting GEOID Sets</a></li>
+<li><a href="./api/store/#Module-Index">Module Index</a></li>
+<li><a href="./api/fetch/#Fetch-Module">Fetch Module</a></li>
+<li><a href="./api/fetch/#Spatial-Filtering">Spatial Filtering</a></li>
+<li><a href="./api/fetch/#Regional-and-State-Filters">Regional and State Filters</a></li>
+<li><a href="./api/fetch/#County-Retrieval">County Retrieval</a></li>
+<li><a href="./api/fetch/#Module-Index">Module Index</a></li>
+<li><a href="./api/operations/#Operations-Module">Operations Module</a></li>
+<li><a href="./api/operations/#Set-Operations">Set Operations</a></li>
+<li><a href="./api/operations/#Module-Index">Module Index</a></li>
+</ul>
+</nav>
+<h2 id="Index" class="md-heading">Index<a href="#Index" class="md-heading-anchor" aria-label="Link to this section">#</a></h2>
+<div class="md-index">
+<ul>
+<li><a href="./api/db/#GeoIDs.DB.execute"><code>GeoIDs.DB.execute</code></a></li>
+<li><a href="./api/db/#GeoIDs.DB.execute_query"><code>GeoIDs.DB.execute_query</code></a></li>
+<li><a href="./api/db/#GeoIDs.DB.get_connection"><code>GeoIDs.DB.get_connection</code></a></li>
+<li><a href="./api/db/#GeoIDs.DB.get_connection_string"><code>GeoIDs.DB.get_connection_string</code></a></li>
+<li><a href="./api/db/#GeoIDs.DB.get_db_name"><code>GeoIDs.DB.get_db_name</code></a></li>
+<li><a href="./api/db/#GeoIDs.DB.get_db_params"><code>GeoIDs.DB.get_db_params</code></a></li>
+<li><a href="./api/db/#GeoIDs.DB.setup_tables"><code>GeoIDs.DB.setup_tables</code></a></li>
+<li><a href="./api/db/#GeoIDs.DB.with_connection"><code>GeoIDs.DB.with_connection</code></a></li>
+<li><a href="./api/fetch/#GeoIDs.Fetch.get_eastern_geoids"><code>GeoIDs.Fetch.get_eastern_geoids</code></a></li>
+<li><a href="./api/fetch/#GeoIDs.Fetch.get_florida_south_geoids"><code>GeoIDs.Fetch.get_florida_south_geoids</code></a></li>
+<li><a href="./api/fetch/#GeoIDs.Fetch.get_geoids_by_county_names"><code>GeoIDs.Fetch.get_geoids_by_county_names</code></a></li>
+<li><a href="./api/fetch/#GeoIDs.Fetch.get_geoids_by_custom_query"><code>GeoIDs.Fetch.get_geoids_by_custom_query</code></a></li>
+<li><a href="./api/fetch/#GeoIDs.Fetch.get_geoids_by_population_range"><code>GeoIDs.Fetch.get_geoids_by_population_range</code></a></li>
+<li><a href="./api/fetch/#GeoIDs.Fetch.get_geoids_by_spatial_filter"><code>GeoIDs.Fetch.get_geoids_by_spatial_filter</code></a></li>
+<li><a href="./api/fetch/#GeoIDs.Fetch.get_geoids_by_state"><code>GeoIDs.Fetch.get_geoids_by_state</code></a></li>
+<li><a href="./api/fetch/#GeoIDs.Fetch.get_geoids_by_states"><code>GeoIDs.Fetch.get_geoids_by_states</code></a></li>
+<li><a href="./api/fetch/#GeoIDs.Fetch.get_western_geoids"><code>GeoIDs.Fetch.get_western_geoids</code></a></li>
+<li><a href="./api/operations/#GeoIDs.Operations.difference_geoid_sets"><code>GeoIDs.Operations.difference_geoid_sets</code></a></li>
+<li><a href="./api/operations/#GeoIDs.Operations.intersect_geoid_sets"><code>GeoIDs.Operations.intersect_geoid_sets</code></a></li>
+<li><a href="./api/operations/#GeoIDs.Operations.symmetric_difference_geoid_sets"><code>GeoIDs.Operations.symmetric_difference_geoid_sets</code></a></li>
+<li><a href="./api/operations/#GeoIDs.Operations.union_geoid_sets"><code>GeoIDs.Operations.union_geoid_sets</code></a></li>
+<li><a href="./api/setup/#GeoIDs.Setup.download_county_shapefile"><code>GeoIDs.Setup.download_county_shapefile</code></a></li>
+<li><a href="./api/setup/#GeoIDs.Setup.ensure_database_exists"><code>GeoIDs.Setup.ensure_database_exists</code></a></li>
+<li><a href="./api/setup/#GeoIDs.Setup.extract_shapefile"><code>GeoIDs.Setup.extract_shapefile</code></a></li>
+<li><a href="./api/core/#GeoIDs.Setup.initialize_database"><code>GeoIDs.Setup.initialize_database</code></a></li>
+<li><a href="./api/setup/#GeoIDs.Setup.load_counties_to_db"><code>GeoIDs.Setup.load_counties_to_db</code></a></li>
+<li><a href="./api/setup/#GeoIDs.Setup.setup_census_schema"><code>GeoIDs.Setup.setup_census_schema</code></a></li>
+<li><a href="./api/store/#GeoIDs.Store.add_to_geoid_set"><code>GeoIDs.Store.add_to_geoid_set</code></a></li>
+<li><a href="./api/store/#GeoIDs.Store.compare_geoid_set_versions"><code>GeoIDs.Store.compare_geoid_set_versions</code></a></li>
+<li><a href="./api/store/#GeoIDs.Store.create_geoid_set"><code>GeoIDs.Store.create_geoid_set</code></a></li>
+<li><a href="./api/store/#GeoIDs.Store.create_geoid_set_version"><code>GeoIDs.Store.create_geoid_set_version</code></a></li>
+<li><a href="./api/store/#GeoIDs.Store.delete_geoid_set"><code>GeoIDs.Store.delete_geoid_set</code></a></li>
+<li><a href="./api/store/#GeoIDs.Store.get_geoid_set"><code>GeoIDs.Store.get_geoid_set</code></a></li>
+<li><a href="./api/store/#GeoIDs.Store.get_geoid_set_version"><code>GeoIDs.Store.get_geoid_set_version</code></a></li>
+<li><a href="./api/store/#GeoIDs.Store.list_geoid_set_versions"><code>GeoIDs.Store.list_geoid_set_versions</code></a></li>
+<li><a href="./api/store/#GeoIDs.Store.list_geoid_sets"><code>GeoIDs.Store.list_geoid_sets</code></a></li>
+<li><a href="./api/store/#GeoIDs.Store.remove_from_geoid_set"><code>GeoIDs.Store.remove_from_geoid_set</code></a></li>
+<li><a href="./api/store/#GeoIDs.Store.rollback_geoid_set"><code>GeoIDs.Store.rollback_geoid_set</code></a></li>
+<li><a href="./api/core/#GeoIDs.backup_geoid_sets"><code>GeoIDs.backup_geoid_sets</code></a></li>
+<li><a href="./api/core/#GeoIDs.initialize_predefined_geoid_sets"><code>GeoIDs.initialize_predefined_geoid_sets</code></a></li>
+<li><a href="./api/core/#GeoIDs.load_predefined_geoids"><code>GeoIDs.load_predefined_geoids</code></a></li>
+<li><a href="./api/core/#GeoIDs.restore_geoid_sets"><code>GeoIDs.restore_geoid_sets</code></a></li>
+</ul>
+</div>
+<div class="md-code-block">
+<button class="md-copy-btn" title="Copy to clipboard" aria-label="Copy code"><span class="md-copy-icon">⧉</span><span class="md-copy-feedback">Copied!</span></button>
+<pre><code></code></pre>
+</div>
+      </article>
+      <footer class="md-footer">
+<p>Built with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and <a href="https://github.com/mthelm85/MaterialDocs.jl">MaterialDocs.jl</a>.</p>
+      </footer>
+    </main>
+    <aside class="md-toc">
+      <div class="md-toc-inner">
+        <p class="md-toc-title">On this page</p>
+          <a class="md-toc-link md-toc-h2" href="#Overview">Overview</a>
+          <a class="md-toc-link md-toc-h2" href="#Prerequisites">Prerequisites</a>
+          <a class="md-toc-link md-toc-h2" href="#Installation">Installation</a>
+          <a class="md-toc-link md-toc-h2" href="#Quick-Start">Quick Start</a>
+            <a class="md-toc-link md-toc-h3" href="#1.-Set-Up-the-Database">1. Set Up the Database</a>
+            <a class="md-toc-link md-toc-h3" href="#2.-Create-GEOID-Sets">2. Create GEOID Sets</a>
+            <a class="md-toc-link md-toc-h3" href="#3.-Perform-Set-Operations">3. Perform Set Operations</a>
+            <a class="md-toc-link md-toc-h3" href="#4.-List-and-Manage-Sets">4. List and Manage Sets</a>
+          <a class="md-toc-link md-toc-h2" href="#Documentation">Documentation</a>
+            <a class="md-toc-link md-toc-h3" href="#User-Guides">User Guides</a>
+            <a class="md-toc-link md-toc-h3" href="#API-Reference">API Reference</a>
+          <a class="md-toc-link md-toc-h2" href="#Index">Index</a>
+      </div>
+    </aside>
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/julia.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/julia-repl.min.js"></script>
+  <script>hljs.highlightAll();</script>
+  <script src="./siteinfo.js"></script>
+  <script src="./../versions.js"></script>
+  <script src="./assets/materialdocs.js?v=8835c429"></script>
+</body>
+</html>

@@ -1,0 +1,267 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Spatial Filtering — GeoIDs.jl</title>
+  <link rel="stylesheet" href="../../assets/materialdocs.css?v=516c2ed8">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fira+Sans:wght@400;500;600;700&family=Source+Sans+3:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap">
+  <meta name="title" content="Spatial Filtering — GeoIDs.jl">
+  <meta property="og:title" content="Spatial Filtering — GeoIDs.jl">
+  <meta property="twitter:title" content="Spatial Filtering — GeoIDs.jl">
+  <meta name="description" content="Documentation for GeoIDs.jl.">
+  <meta property="og:description" content="Documentation for GeoIDs.jl.">
+  <meta property="twitter:description" content="Documentation for GeoIDs.jl.">
+  <meta property="og:url" content="https://technocrat.github.io/GeoIDs.jl/guide/spatial-filtering/">
+  <meta property="twitter:url" content="https://technocrat.github.io/GeoIDs.jl/guide/spatial-filtering/">
+  <link rel="canonical" href="https://technocrat.github.io/GeoIDs.jl/guide/spatial-filtering/">
+  <script>
+    (function(){
+      document.documentElement.classList.add('no-transition');
+      var t=localStorage.getItem('md-theme');if(t)document.documentElement.setAttribute('data-theme',t);
+      window.addEventListener('load',function(){setTimeout(function(){document.documentElement.classList.remove('no-transition');},50);});
+    })()
+  </script>
+</head>
+<body data-warn-outdated>
+  <header class="md-navbar">
+    <button id="md-hamburger" class="md-icon-btn md-hamburger" aria-label="Toggle navigation" aria-expanded="false"><svg class="md-icon" viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true" focusable="false"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg></button>
+    <span class="md-navbar-title">GeoIDs.jl</span>
+    <span class="md-navbar-spacer"></span>
+    <button id="md-search-btn" class="md-search-bar" aria-label="Search documentation" aria-expanded="false">
+      <svg class="md-icon md-search-bar-icon" viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true" focusable="false"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+      <span class="md-search-bar-label">Search docs</span>
+      <kbd class="md-search-bar-kbd">Ctrl K</kbd>
+    </button>
+    <div id="md-version" class="md-version" hidden>
+      <button id="md-version-btn" class="md-version-btn" aria-haspopup="listbox" aria-expanded="false" aria-label="Select documentation version">
+        <span id="md-version-current" class="md-version-current"></span>
+        <svg class="md-icon md-version-caret" viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true" focusable="false"><path d="M7 10l5 5 5-5z"/></svg>
+      </button>
+      <ul id="md-version-menu" class="md-version-menu" role="listbox" hidden></ul>
+    </div>
+    <a class="md-icon-btn md-repo-link" href="https://github.com/technocrat/GeoIDs.jl" title="View the repository on GitHub" aria-label="View the repository on GitHub" rel="noopener" target="_blank"><svg class="md-icon" viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true" focusable="false"><path d="M12 .3a12 12 0 00-3.8 23.4c.6.1.8-.3.8-.6v-2c-3.3.7-4-1.6-4-1.6-.6-1.4-1.4-1.8-1.4-1.8-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.8 1.3 3.5 1 0-.8.4-1.3.7-1.6-2.7-.3-5.5-1.3-5.5-6 0-1.2.5-2.3 1.3-3.1-.2-.4-.6-1.6.1-3.2 0 0 1-.3 3.3 1.2a11.5 11.5 0 016 0c2.3-1.5 3.3-1.2 3.3-1.2.7 1.6.2 2.8.1 3.2.8.8 1.3 1.9 1.3 3.2 0 4.6-2.8 5.6-5.5 5.9.5.4.9 1.1.9 2.2v3.3c0 .3.1.7.8.6A12 12 0 0012 .3z"/></svg><span class="md-repo-label">GitHub</span></a>
+    <button id="md-theme-toggle" class="md-icon-btn" title="Toggle dark mode" aria-label="Toggle dark mode"><svg class="md-icon md-icon-light" viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true" focusable="false"><path d="M12 7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zM2 13h2c.55 0 1-.45 1-1s-.45-1-1-1H2c-.55 0-1 .45-1 1s.45 1 1 1zm18 0h2c.55 0 1-.45 1-1s-.45-1-1-1h-2c-.55 0-1 .45-1 1s.45 1 1 1zM11 2v2c0 .55.45 1 1 1s1-.45 1-1V2c0-.55-.45-1-1-1s-1 .45-1 1zm0 18v2c0 .55.45 1 1 1s1-.45 1-1v-2c0-.55-.45-1-1-1s-1 .45-1 1zM5.99 4.58a.996.996 0 00-1.41 0 .996.996 0 000 1.41l1.06 1.06c.39.39 1.03.39 1.41 0s.39-1.03 0-1.41L5.99 4.58zm12.37 12.37a.996.996 0 00-1.41 0 .996.996 0 000 1.41l1.06 1.06c.39.39 1.03.39 1.41 0a.996.996 0 000-1.41l-1.06-1.06zm1.06-10.96a.996.996 0 000-1.41.996.996 0 00-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41s1.03.39 1.41 0l1.06-1.06zM7.05 18.36a.996.996 0 000-1.41.996.996 0 00-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41s1.03.39 1.41 0l1.06-1.06z"/></svg><svg class="md-icon md-icon-dark" viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true" focusable="false"><path d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9 9-4.03 9-9c0-.46-.04-.92-.1-1.36-.98 1.37-2.58 2.26-4.4 2.26-2.98 0-5.4-2.42-5.4-5.4 0-1.81.89-3.42 2.26-4.4-.44-.06-.9-.1-1.36-.1z"/></svg></button>
+  </header>
+  <div class="md-layout">
+    <nav class="md-sidebar">
+      <a href="../../">Home</a>
+      <div class="md-nav-section">
+        <span class="md-nav-section-title">User Guide</span>
+        <a href="../../guide/postgresql-setup/">PostgreSQL Setup</a>
+        <a href="../../guide/database-config/">Database Configuration</a>
+        <a href="../../guide/database-setup/">Database Setup</a>
+        <a href="../../guide/getting-started/">Getting Started</a>
+        <a href="../../guide/geoid-sets/">GEOID Sets</a>
+        <a href="../../guide/spatial-filtering/" class="md-nav-active">Spatial Filtering</a>
+        <a href="../../guide/set-operations/">Set Operations</a>
+        <a href="../../guide/versioning/">Versioning</a>
+      </div>
+      <div class="md-nav-section">
+        <span class="md-nav-section-title">API Reference</span>
+        <a href="../../api/core/">Core</a>
+        <a href="../../api/db/">DB</a>
+        <a href="../../api/store/">Store</a>
+        <a href="../../api/fetch/">Fetch</a>
+        <a href="../../api/operations/">Operations</a>
+        <a href="../../api/setup/">Setup</a>
+      </div>
+      <a href="../../contributing/">Contributing</a>
+    </nav>
+    <main class="md-content">
+      <article class="md-article">
+      <div class="md-article-actions"><a class="md-icon-btn md-edit-link" href="https://github.com/technocrat/GeoIDs.jl/blob/main/docs/src/guide/spatial-filtering.md" title="Edit source on GitHub" aria-label="Edit source on GitHub"><svg class="md-icon" viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true" focusable="false"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04a.996.996 0 000-1.41l-2.34-2.34a.996.996 0 00-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg></a></div>
+<h1 id="Spatial-Filtering" class="md-heading">Spatial Filtering<a href="#Spatial-Filtering" class="md-heading-anchor" aria-label="Link to this section">#</a></h1>
+<p>GeoIDs.jl provides powerful spatial filtering capabilities to generate GEOIDs based on geographic criteria. These functions allow you to select counties based on latitude, longitude, distance from a point, or within a bounding box.</p>
+<h2 id="Basic-Usage" class="md-heading">Basic Usage<a href="#Basic-Usage" class="md-heading-anchor" aria-label="Link to this section">#</a></h2>
+<p>The main function for spatial filtering is <code class="md-code-inline">get_geoids_by_spatial_filter</code>:</p>
+<div class="md-code-block">
+<button class="md-copy-btn" title="Copy to clipboard" aria-label="Copy code"><span class="md-copy-icon">⧉</span><span class="md-copy-feedback">Copied!</span></button>
+<pre><code class="language-julia">get_geoids_by_spatial_filter(filter_type::Symbol, parameters::Dict) -&gt; Vector{String}</code></pre>
+</div>
+<ul class="md-list-tight">
+<li><p><code class="md-code-inline">filter_type</code>: The type of spatial filter to apply (<code class="md-code-inline">:latitude</code>, <code class="md-code-inline">:longitude</code>, <code class="md-code-inline">:distance</code>, or <code class="md-code-inline">:bounding_box</code>)</p>
+</li>
+<li><p><code class="md-code-inline">parameters</code>: A dictionary containing the parameters for the specified filter type</p>
+</li>
+<li><p>Returns: A vector of GEOIDs matching the spatial criteria</p>
+</li>
+</ul>
+<h2 id="Filter-Types" class="md-heading">Filter Types<a href="#Filter-Types" class="md-heading-anchor" aria-label="Link to this section">#</a></h2>
+<h3 id="Latitude-Filter" class="md-heading">Latitude Filter<a href="#Latitude-Filter" class="md-heading-anchor" aria-label="Link to this section">#</a></h3>
+<p>Select counties based on their latitude range:</p>
+<div class="md-code-block">
+<button class="md-copy-btn" title="Copy to clipboard" aria-label="Copy code"><span class="md-copy-icon">⧉</span><span class="md-copy-feedback">Copied!</span></button>
+<pre><code class="language-julia"># Get counties in southern Florida (below 27° N)
+south_fl = get_geoids_by_spatial_filter(:latitude, Dict(
+    &quot;min_lat&quot; =&gt; 25.0,
+    &quot;max_lat&quot; =&gt; 27.0
+))</code></pre>
+</div>
+<p><strong>Parameters:</strong></p>
+<ul class="md-list-tight">
+<li><p><code class="md-code-inline">min_lat</code>: Minimum latitude (decimal degrees)</p>
+</li>
+<li><p><code class="md-code-inline">max_lat</code>: Maximum latitude (decimal degrees)</p>
+</li>
+</ul>
+<h3 id="Longitude-Filter" class="md-heading">Longitude Filter<a href="#Longitude-Filter" class="md-heading-anchor" aria-label="Link to this section">#</a></h3>
+<p>Select counties based on their longitude range:</p>
+<div class="md-code-block">
+<button class="md-copy-btn" title="Copy to clipboard" aria-label="Copy code"><span class="md-copy-icon">⧉</span><span class="md-copy-feedback">Copied!</span></button>
+<pre><code class="language-julia"># Get counties in western United States
+western_counties = get_geoids_by_spatial_filter(:longitude, Dict(
+    &quot;min_lon&quot; =&gt; -125.0,
+    &quot;max_lon&quot; =&gt; -110.0
+))</code></pre>
+</div>
+<p><strong>Parameters:</strong></p>
+<ul class="md-list-tight">
+<li><p><code class="md-code-inline">min_lon</code>: Minimum longitude (decimal degrees)</p>
+</li>
+<li><p><code class="md-code-inline">max_lon</code>: Maximum longitude (decimal degrees)</p>
+</li>
+</ul>
+<h3 id="Distance-Filter" class="md-heading">Distance Filter<a href="#Distance-Filter" class="md-heading-anchor" aria-label="Link to this section">#</a></h3>
+<p>Select counties within a specified distance from a point:</p>
+<div class="md-code-block">
+<button class="md-copy-btn" title="Copy to clipboard" aria-label="Copy code"><span class="md-copy-icon">⧉</span><span class="md-copy-feedback">Copied!</span></button>
+<pre><code class="language-julia"># Get counties within 100 kilometers of Chicago
+chicago_area = get_geoids_by_spatial_filter(:distance, Dict(
+    &quot;lat&quot; =&gt; 41.8781,
+    &quot;lon&quot; =&gt; -87.6298,
+    &quot;distance&quot; =&gt; 100.0,  # kilometers
+    &quot;unit&quot; =&gt; &quot;km&quot;
+))
+
+# Get counties within 50 miles of Miami
+miami_area = get_geoids_by_spatial_filter(:distance, Dict(
+    &quot;lat&quot; =&gt; 25.7617,
+    &quot;lon&quot; =&gt; -80.1918,
+    &quot;distance&quot; =&gt; 50.0,
+    &quot;unit&quot; =&gt; &quot;mi&quot;
+))</code></pre>
+</div>
+<p><strong>Parameters:</strong></p>
+<ul class="md-list-tight">
+<li><p><code class="md-code-inline">lat</code>: Latitude of the center point (decimal degrees)</p>
+</li>
+<li><p><code class="md-code-inline">lon</code>: Longitude of the center point (decimal degrees)</p>
+</li>
+<li><p><code class="md-code-inline">distance</code>: Maximum distance from the center point</p>
+</li>
+<li><p><code class="md-code-inline">unit</code>: Distance unit (&quot;km&quot; for kilometers or &quot;mi&quot; for miles, default: &quot;km&quot;)</p>
+</li>
+<li><p><code class="md-code-inline">include_intersecting</code>: Whether to include counties that intersect the radius or only those fully contained (default: true)</p>
+</li>
+</ul>
+<h3 id="Bounding-Box-Filter" class="md-heading">Bounding Box Filter<a href="#Bounding-Box-Filter" class="md-heading-anchor" aria-label="Link to this section">#</a></h3>
+<p>Select counties within or intersecting a rectangular bounding box:</p>
+<div class="md-code-block">
+<button class="md-copy-btn" title="Copy to clipboard" aria-label="Copy code"><span class="md-copy-icon">⧉</span><span class="md-copy-feedback">Copied!</span></button>
+<pre><code class="language-julia"># Get counties in the southeastern United States
+southeast = get_geoids_by_spatial_filter(:bounding_box, Dict(
+    &quot;min_lat&quot; =&gt; 30.0,
+    &quot;max_lat&quot; =&gt; 35.0,
+    &quot;min_lon&quot; =&gt; -90.0,
+    &quot;max_lon&quot; =&gt; -80.0,
+    &quot;include_intersecting&quot; =&gt; true
+))</code></pre>
+</div>
+<p><strong>Parameters:</strong></p>
+<ul class="md-list-tight">
+<li><p><code class="md-code-inline">min_lat</code>: Minimum latitude (decimal degrees)</p>
+</li>
+<li><p><code class="md-code-inline">max_lat</code>: Maximum latitude (decimal degrees)</p>
+</li>
+<li><p><code class="md-code-inline">min_lon</code>: Minimum longitude (decimal degrees)</p>
+</li>
+<li><p><code class="md-code-inline">max_lon</code>: Maximum longitude (decimal degrees)</p>
+</li>
+<li><p><code class="md-code-inline">include_intersecting</code>: Whether to include counties that intersect the bounding box or only those fully contained (default: true)</p>
+</li>
+</ul>
+<h2 id="Helper-Functions" class="md-heading">Helper Functions<a href="#Helper-Functions" class="md-heading-anchor" aria-label="Link to this section">#</a></h2>
+<h3 id="Getting-Counties-by-Region" class="md-heading">Getting Counties by Region<a href="#Getting-Counties-by-Region" class="md-heading-anchor" aria-label="Link to this section">#</a></h3>
+<p>The package provides shortcuts for common regional selections:</p>
+<div class="md-code-block">
+<button class="md-copy-btn" title="Copy to clipboard" aria-label="Copy code"><span class="md-copy-icon">⧉</span><span class="md-copy-feedback">Copied!</span></button>
+<pre><code class="language-julia"># Get all counties in the western United States
+western_counties = get_western_geoids()
+
+# Get all counties in the eastern United States
+eastern_counties = get_eastern_geoids()
+
+# Get counties in southern Florida
+south_florida = get_florida_south_geoids()</code></pre>
+</div>
+<h3 id="Getting-Counties-by-State" class="md-heading">Getting Counties by State<a href="#Getting-Counties-by-State" class="md-heading-anchor" aria-label="Link to this section">#</a></h3>
+<p>You can get all counties in a specific state:</p>
+<div class="md-code-block">
+<button class="md-copy-btn" title="Copy to clipboard" aria-label="Copy code"><span class="md-copy-icon">⧉</span><span class="md-copy-feedback">Copied!</span></button>
+<pre><code class="language-julia"># Get all counties in California
+ca_counties = get_geoids_by_state(&quot;CA&quot;)
+
+# Get all counties in New York
+ny_counties = get_geoids_by_state(&quot;NY&quot;)</code></pre>
+</div>
+<h2 id="Technical-Details" class="md-heading">Technical Details<a href="#Technical-Details" class="md-heading-anchor" aria-label="Link to this section">#</a></h2>
+<p>Spatial filtering uses PostGIS spatial functions to perform geographic queries:</p>
+<ul class="md-list-tight">
+<li><p>Latitude/longitude filters use the <code class="md-code-inline">ST_Y(ST_PointOnSurface(geom))</code> and <code class="md-code-inline">ST_X(ST_PointOnSurface(geom))</code> functions</p>
+</li>
+<li><p>Distance filters use the <code class="md-code-inline">ST_DWithin</code> function with proper distance units</p>
+</li>
+<li><p>Bounding box filters use the <code class="md-code-inline">ST_MakeEnvelope</code> and either <code class="md-code-inline">ST_Covers</code> or <code class="md-code-inline">ST_Intersects</code> functions</p>
+</li>
+</ul>
+<h2 id="Performance-Considerations" class="md-heading">Performance Considerations<a href="#Performance-Considerations" class="md-heading-anchor" aria-label="Link to this section">#</a></h2>
+<p>Spatial queries can be computationally intensive. The package:</p>
+<ol class="md-list-tight">
+<li><p>Uses spatial indices on the geometry column for efficient querying</p>
+</li>
+<li><p>Converts all calculations to the appropriate coordinate reference system</p>
+</li>
+<li><p>Caches common query results for faster repeated access</p>
+</li>
+</ol>
+<p>For large datasets or complex queries, consider:</p>
+<ul class="md-list-tight">
+<li><p>Starting with a more restrictive spatial filter and then refining results</p>
+</li>
+<li><p>Combining spatial filters with other criteria using set operations</p>
+</li>
+<li><p>Creating and reusing GEOID sets for frequently used geographic areas </p>
+</li>
+</ul>
+      </article>
+      <footer class="md-footer">
+<p>Built with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and <a href="https://github.com/mthelm85/MaterialDocs.jl">MaterialDocs.jl</a>.</p>
+      </footer>
+    </main>
+    <aside class="md-toc">
+      <div class="md-toc-inner">
+        <p class="md-toc-title">On this page</p>
+          <a class="md-toc-link md-toc-h2" href="#Basic-Usage">Basic Usage</a>
+          <a class="md-toc-link md-toc-h2" href="#Filter-Types">Filter Types</a>
+            <a class="md-toc-link md-toc-h3" href="#Latitude-Filter">Latitude Filter</a>
+            <a class="md-toc-link md-toc-h3" href="#Longitude-Filter">Longitude Filter</a>
+            <a class="md-toc-link md-toc-h3" href="#Distance-Filter">Distance Filter</a>
+            <a class="md-toc-link md-toc-h3" href="#Bounding-Box-Filter">Bounding Box Filter</a>
+          <a class="md-toc-link md-toc-h2" href="#Helper-Functions">Helper Functions</a>
+            <a class="md-toc-link md-toc-h3" href="#Getting-Counties-by-Region">Getting Counties by Region</a>
+            <a class="md-toc-link md-toc-h3" href="#Getting-Counties-by-State">Getting Counties by State</a>
+          <a class="md-toc-link md-toc-h2" href="#Technical-Details">Technical Details</a>
+          <a class="md-toc-link md-toc-h2" href="#Performance-Considerations">Performance Considerations</a>
+      </div>
+    </aside>
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/julia.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/julia-repl.min.js"></script>
+  <script>hljs.highlightAll();</script>
+  <script src="../../siteinfo.js"></script>
+  <script src="../../../versions.js"></script>
+  <script src="../../assets/materialdocs.js?v=516c2ed8"></script>
+</body>
+</html>

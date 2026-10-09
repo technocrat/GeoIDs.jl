@@ -1,0 +1,308 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Set Operations — GeoIDs.jl</title>
+  <link rel="stylesheet" href="../../assets/materialdocs.css?v=d8676150">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fira+Sans:wght@400;500;600;700&family=Source+Sans+3:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap">
+  <meta name="title" content="Set Operations — GeoIDs.jl">
+  <meta property="og:title" content="Set Operations — GeoIDs.jl">
+  <meta property="twitter:title" content="Set Operations — GeoIDs.jl">
+  <meta name="description" content="Documentation for GeoIDs.jl.">
+  <meta property="og:description" content="Documentation for GeoIDs.jl.">
+  <meta property="twitter:description" content="Documentation for GeoIDs.jl.">
+  <meta property="og:url" content="https://technocrat.github.io/GeoIDs.jl/guide/set-operations/">
+  <meta property="twitter:url" content="https://technocrat.github.io/GeoIDs.jl/guide/set-operations/">
+  <link rel="canonical" href="https://technocrat.github.io/GeoIDs.jl/guide/set-operations/">
+  <script>
+    (function(){
+      document.documentElement.classList.add('no-transition');
+      var t=localStorage.getItem('md-theme');if(t)document.documentElement.setAttribute('data-theme',t);
+      window.addEventListener('load',function(){setTimeout(function(){document.documentElement.classList.remove('no-transition');},50);});
+    })()
+  </script>
+</head>
+<body data-warn-outdated>
+  <header class="md-navbar">
+    <button id="md-hamburger" class="md-icon-btn md-hamburger" aria-label="Toggle navigation" aria-expanded="false"><svg class="md-icon" viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true" focusable="false"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg></button>
+    <span class="md-navbar-title">GeoIDs.jl</span>
+    <span class="md-navbar-spacer"></span>
+    <button id="md-search-btn" class="md-search-bar" aria-label="Search documentation" aria-expanded="false">
+      <svg class="md-icon md-search-bar-icon" viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true" focusable="false"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+      <span class="md-search-bar-label">Search docs</span>
+      <kbd class="md-search-bar-kbd">Ctrl K</kbd>
+    </button>
+    <div id="md-version" class="md-version" hidden>
+      <button id="md-version-btn" class="md-version-btn" aria-haspopup="listbox" aria-expanded="false" aria-label="Select documentation version">
+        <span id="md-version-current" class="md-version-current"></span>
+        <svg class="md-icon md-version-caret" viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true" focusable="false"><path d="M7 10l5 5 5-5z"/></svg>
+      </button>
+      <ul id="md-version-menu" class="md-version-menu" role="listbox" hidden></ul>
+    </div>
+    <a class="md-icon-btn md-repo-link" href="https://github.com/technocrat/GeoIDs.jl" title="View the repository on GitHub" aria-label="View the repository on GitHub" rel="noopener" target="_blank"><svg class="md-icon" viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true" focusable="false"><path d="M12 .3a12 12 0 00-3.8 23.4c.6.1.8-.3.8-.6v-2c-3.3.7-4-1.6-4-1.6-.6-1.4-1.4-1.8-1.4-1.8-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.8 1.3 3.5 1 0-.8.4-1.3.7-1.6-2.7-.3-5.5-1.3-5.5-6 0-1.2.5-2.3 1.3-3.1-.2-.4-.6-1.6.1-3.2 0 0 1-.3 3.3 1.2a11.5 11.5 0 016 0c2.3-1.5 3.3-1.2 3.3-1.2.7 1.6.2 2.8.1 3.2.8.8 1.3 1.9 1.3 3.2 0 4.6-2.8 5.6-5.5 5.9.5.4.9 1.1.9 2.2v3.3c0 .3.1.7.8.6A12 12 0 0012 .3z"/></svg><span class="md-repo-label">GitHub</span></a>
+    <button id="md-theme-toggle" class="md-icon-btn" title="Toggle dark mode" aria-label="Toggle dark mode"><svg class="md-icon md-icon-light" viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true" focusable="false"><path d="M12 7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zM2 13h2c.55 0 1-.45 1-1s-.45-1-1-1H2c-.55 0-1 .45-1 1s.45 1 1 1zm18 0h2c.55 0 1-.45 1-1s-.45-1-1-1h-2c-.55 0-1 .45-1 1s.45 1 1 1zM11 2v2c0 .55.45 1 1 1s1-.45 1-1V2c0-.55-.45-1-1-1s-1 .45-1 1zm0 18v2c0 .55.45 1 1 1s1-.45 1-1v-2c0-.55-.45-1-1-1s-1 .45-1 1zM5.99 4.58a.996.996 0 00-1.41 0 .996.996 0 000 1.41l1.06 1.06c.39.39 1.03.39 1.41 0s.39-1.03 0-1.41L5.99 4.58zm12.37 12.37a.996.996 0 00-1.41 0 .996.996 0 000 1.41l1.06 1.06c.39.39 1.03.39 1.41 0a.996.996 0 000-1.41l-1.06-1.06zm1.06-10.96a.996.996 0 000-1.41.996.996 0 00-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41s1.03.39 1.41 0l1.06-1.06zM7.05 18.36a.996.996 0 000-1.41.996.996 0 00-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41s1.03.39 1.41 0l1.06-1.06z"/></svg><svg class="md-icon md-icon-dark" viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true" focusable="false"><path d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9 9-4.03 9-9c0-.46-.04-.92-.1-1.36-.98 1.37-2.58 2.26-4.4 2.26-2.98 0-5.4-2.42-5.4-5.4 0-1.81.89-3.42 2.26-4.4-.44-.06-.9-.1-1.36-.1z"/></svg></button>
+  </header>
+  <div class="md-layout">
+    <nav class="md-sidebar">
+      <a href="../../">Home</a>
+      <div class="md-nav-section">
+        <span class="md-nav-section-title">User Guide</span>
+        <a href="../../guide/postgresql-setup/">PostgreSQL Setup</a>
+        <a href="../../guide/database-config/">Database Configuration</a>
+        <a href="../../guide/database-setup/">Database Setup</a>
+        <a href="../../guide/getting-started/">Getting Started</a>
+        <a href="../../guide/geoid-sets/">GEOID Sets</a>
+        <a href="../../guide/spatial-filtering/">Spatial Filtering</a>
+        <a href="../../guide/set-operations/" class="md-nav-active">Set Operations</a>
+        <a href="../../guide/versioning/">Versioning</a>
+      </div>
+      <div class="md-nav-section">
+        <span class="md-nav-section-title">API Reference</span>
+        <a href="../../api/core/">Core</a>
+        <a href="../../api/db/">DB</a>
+        <a href="../../api/store/">Store</a>
+        <a href="../../api/fetch/">Fetch</a>
+        <a href="../../api/operations/">Operations</a>
+        <a href="../../api/setup/">Setup</a>
+      </div>
+      <a href="../../contributing/">Contributing</a>
+    </nav>
+    <main class="md-content">
+      <article class="md-article">
+      <div class="md-article-actions"><a class="md-icon-btn md-edit-link" href="https://github.com/technocrat/GeoIDs.jl/blob/main/docs/src/guide/set-operations.md" title="Edit source on GitHub" aria-label="Edit source on GitHub"><svg class="md-icon" viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true" focusable="false"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04a.996.996 0 000-1.41l-2.34-2.34a.996.996 0 00-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg></a></div>
+<h1 id="Set-Operations" class="md-heading">Set Operations<a href="#Set-Operations" class="md-heading-anchor" aria-label="Link to this section">#</a></h1>
+<p>GeoIDs.jl supports standard set operations on GEOID sets, allowing you to combine and manipulate geographic areas in powerful ways. These operations follow the mathematical set theory concepts and create new GEOID sets that can be saved and versioned.</p>
+<h2 id="Available-Operations" class="md-heading">Available Operations<a href="#Available-Operations" class="md-heading-anchor" aria-label="Link to this section">#</a></h2>
+<p>The package provides four primary set operations:</p>
+<ol class="md-list-tight">
+<li><p><strong>Union</strong>: Combines all GEOIDs from multiple sets</p>
+</li>
+<li><p><strong>Intersection</strong>: Keeps only GEOIDs that appear in all sets</p>
+</li>
+<li><p><strong>Difference</strong>: Keeps GEOIDs from the first set that don&#39;t appear in the second set</p>
+</li>
+<li><p><strong>Symmetric Difference</strong>: Keeps GEOIDs that appear in exactly one of the two sets</p>
+</li>
+</ol>
+<h2 id="Union-Operation" class="md-heading">Union Operation<a href="#Union-Operation" class="md-heading-anchor" aria-label="Link to this section">#</a></h2>
+<p>The union operation combines all GEOIDs from multiple sets, removing duplicates.</p>
+<div class="md-code-block">
+<button class="md-copy-btn" title="Copy to clipboard" aria-label="Copy code"><span class="md-copy-icon">⧉</span><span class="md-copy-feedback">Copied!</span></button>
+<pre><code class="language-julia">union_geoid_sets(set_names::Vector{String}, output_name::String, description::String=&quot;&quot;) -&gt; Vector{String}</code></pre>
+</div>
+<h3 id="Example" class="md-heading">Example<a href="#Example" class="md-heading-anchor" aria-label="Link to this section">#</a></h3>
+<div class="md-code-block">
+<button class="md-copy-btn" title="Copy to clipboard" aria-label="Copy code"><span class="md-copy-icon">⧉</span><span class="md-copy-feedback">Copied!</span></button>
+<pre><code class="language-julia"># Combine western and mountain counties into a single set
+combined = union_geoid_sets(
+    [&quot;western_counties&quot;, &quot;mountain_counties&quot;], 
+    &quot;western_mountain_counties&quot;,
+    &quot;Combined western and mountain regions&quot;
+)
+
+# Combine multiple regions
+combined_regions = union_geoid_sets(
+    [&quot;south_florida&quot;, &quot;central_florida&quot;, &quot;east_coast&quot;],
+    &quot;analysis_region&quot;,
+    &quot;Combined analysis region&quot;
+)</code></pre>
+</div>
+<h3 id="Parameters" class="md-heading">Parameters<a href="#Parameters" class="md-heading-anchor" aria-label="Link to this section">#</a></h3>
+<ul class="md-list-tight">
+<li><p><code class="md-code-inline">set_names</code>: Vector of GEOID set names to combine</p>
+</li>
+<li><p><code class="md-code-inline">output_name</code>: Name of the new GEOID set to create</p>
+</li>
+<li><p><code class="md-code-inline">description</code>: Optional description for the new set</p>
+</li>
+<li><p>Returns: Vector of GEOIDs in the resulting union set</p>
+</li>
+</ul>
+<h2 id="Intersection-Operation" class="md-heading">Intersection Operation<a href="#Intersection-Operation" class="md-heading-anchor" aria-label="Link to this section">#</a></h2>
+<p>The intersection operation keeps only GEOIDs that appear in all of the input sets.</p>
+<div class="md-code-block">
+<button class="md-copy-btn" title="Copy to clipboard" aria-label="Copy code"><span class="md-copy-icon">⧉</span><span class="md-copy-feedback">Copied!</span></button>
+<pre><code class="language-julia">intersect_geoid_sets(set_names::Vector{String}, output_name::String, description::String=&quot;&quot;) -&gt; Vector{String}</code></pre>
+</div>
+<h3 id="Example-2" class="md-heading">Example<a href="#Example-2" class="md-heading-anchor" aria-label="Link to this section">#</a></h3>
+<div class="md-code-block">
+<button class="md-copy-btn" title="Copy to clipboard" aria-label="Copy code"><span class="md-copy-icon">⧉</span><span class="md-copy-feedback">Copied!</span></button>
+<pre><code class="language-julia"># Find counties that are both in Florida and coastal
+common = intersect_geoid_sets(
+    [&quot;florida_counties&quot;, &quot;coastal_counties&quot;],
+    &quot;florida_coastal_counties&quot;,
+    &quot;Florida counties on the coast&quot;
+)
+
+# Find counties that are in all three sets
+three_way_intersection = intersect_geoid_sets(
+    [&quot;high_population&quot;, &quot;high_income&quot;, &quot;urban_counties&quot;],
+    &quot;affluent_urban_counties&quot;,
+    &quot;Wealthy, populated urban counties&quot;
+)</code></pre>
+</div>
+<h3 id="Parameters-2" class="md-heading">Parameters<a href="#Parameters-2" class="md-heading-anchor" aria-label="Link to this section">#</a></h3>
+<ul class="md-list-tight">
+<li><p><code class="md-code-inline">set_names</code>: Vector of GEOID set names to intersect</p>
+</li>
+<li><p><code class="md-code-inline">output_name</code>: Name of the new GEOID set to create</p>
+</li>
+<li><p><code class="md-code-inline">description</code>: Optional description for the new set</p>
+</li>
+<li><p>Returns: Vector of GEOIDs in the resulting intersection set</p>
+</li>
+</ul>
+<h2 id="Difference-Operation" class="md-heading">Difference Operation<a href="#Difference-Operation" class="md-heading-anchor" aria-label="Link to this section">#</a></h2>
+<p>The difference operation (sometimes called &quot;set subtraction&quot;) keeps GEOIDs that are in the first set but not in the second set.</p>
+<div class="md-code-block">
+<button class="md-copy-btn" title="Copy to clipboard" aria-label="Copy code"><span class="md-copy-icon">⧉</span><span class="md-copy-feedback">Copied!</span></button>
+<pre><code class="language-julia">difference_geoid_sets(base_set::String, subtract_set::String, output_name::String, description::String=&quot;&quot;) -&gt; Vector{String}</code></pre>
+</div>
+<h3 id="Example-3" class="md-heading">Example<a href="#Example-3" class="md-heading-anchor" aria-label="Link to this section">#</a></h3>
+<div class="md-code-block">
+<button class="md-copy-btn" title="Copy to clipboard" aria-label="Copy code"><span class="md-copy-icon">⧉</span><span class="md-copy-feedback">Copied!</span></button>
+<pre><code class="language-julia"># Get all Florida counties that are not coastal
+non_coastal_florida = difference_geoid_sets(
+    &quot;florida_counties&quot;,
+    &quot;coastal_counties&quot;,
+    &quot;florida_inland_counties&quot;,
+    &quot;Florida counties that are not on the coast&quot;
+)
+
+# Get all high population counties that are not in the west
+non_western_populous = difference_geoid_sets(
+    &quot;high_population_counties&quot;,
+    &quot;western_counties&quot;,
+    &quot;eastern_populous_counties&quot;
+)</code></pre>
+</div>
+<h3 id="Parameters-3" class="md-heading">Parameters<a href="#Parameters-3" class="md-heading-anchor" aria-label="Link to this section">#</a></h3>
+<ul class="md-list-tight">
+<li><p><code class="md-code-inline">base_set</code>: Name of the GEOID set to start with</p>
+</li>
+<li><p><code class="md-code-inline">subtract_set</code>: Name of the GEOID set to subtract</p>
+</li>
+<li><p><code class="md-code-inline">output_name</code>: Name of the new GEOID set to create</p>
+</li>
+<li><p><code class="md-code-inline">description</code>: Optional description for the new set</p>
+</li>
+<li><p>Returns: Vector of GEOIDs in the resulting difference set</p>
+</li>
+</ul>
+<h2 id="Symmetric-Difference-Operation" class="md-heading">Symmetric Difference Operation<a href="#Symmetric-Difference-Operation" class="md-heading-anchor" aria-label="Link to this section">#</a></h2>
+<p>The symmetric difference operation keeps GEOIDs that appear in exactly one of the two input sets (not in both).</p>
+<div class="md-code-block">
+<button class="md-copy-btn" title="Copy to clipboard" aria-label="Copy code"><span class="md-copy-icon">⧉</span><span class="md-copy-feedback">Copied!</span></button>
+<pre><code class="language-julia">symmetric_difference_geoid_sets(set1::String, set2::String, output_name::String, description::String=&quot;&quot;) -&gt; Vector{String}</code></pre>
+</div>
+<h3 id="Example-4" class="md-heading">Example<a href="#Example-4" class="md-heading-anchor" aria-label="Link to this section">#</a></h3>
+<div class="md-code-block">
+<button class="md-copy-btn" title="Copy to clipboard" aria-label="Copy code"><span class="md-copy-icon">⧉</span><span class="md-copy-feedback">Copied!</span></button>
+<pre><code class="language-julia"># Find counties that are either eastern or coastal, but not both
+exclusive_regions = symmetric_difference_geoid_sets(
+    &quot;eastern_counties&quot;,
+    &quot;coastal_counties&quot;,
+    &quot;exclusive_regions&quot;,
+    &quot;Counties that are either eastern or coastal, but not both&quot;
+)
+
+# Find counties that are in exactly one of these two states
+fl_ga_exclusive = symmetric_difference_geoid_sets(
+    &quot;florida_counties&quot;,
+    &quot;georgia_counties&quot;,
+    &quot;fl_ga_exclusive&quot;
+)</code></pre>
+</div>
+<h3 id="Parameters-4" class="md-heading">Parameters<a href="#Parameters-4" class="md-heading-anchor" aria-label="Link to this section">#</a></h3>
+<ul class="md-list-tight">
+<li><p><code class="md-code-inline">set1</code>: Name of the first GEOID set</p>
+</li>
+<li><p><code class="md-code-inline">set2</code>: Name of the second GEOID set</p>
+</li>
+<li><p><code class="md-code-inline">output_name</code>: Name of the new GEOID set to create</p>
+</li>
+<li><p><code class="md-code-inline">description</code>: Optional description for the new set</p>
+</li>
+<li><p>Returns: Vector of GEOIDs in the resulting symmetric difference set</p>
+</li>
+</ul>
+<h2 id="Combining-Operations" class="md-heading">Combining Operations<a href="#Combining-Operations" class="md-heading-anchor" aria-label="Link to this section">#</a></h2>
+<p>You can chain set operations together to create complex geographic definitions:</p>
+<div class="md-code-block">
+<button class="md-copy-btn" title="Copy to clipboard" aria-label="Copy code"><span class="md-copy-icon">⧉</span><span class="md-copy-feedback">Copied!</span></button>
+<pre><code class="language-julia"># Get Florida coastal counties first
+fl_coastal = intersect_geoid_sets(
+    [&quot;florida_counties&quot;, &quot;coastal_counties&quot;],
+    &quot;florida_coastal_counties&quot;
+)
+
+# Get Florida coastal counties that are not in the southern region
+central_coastal = difference_geoid_sets(
+    &quot;florida_coastal_counties&quot;,
+    &quot;south_florida&quot;,
+    &quot;central_florida_coastal&quot;
+)
+
+# Combine with a specific county that we want to include
+final_region = union_geoid_sets(
+    [&quot;central_florida_coastal&quot;, &quot;individual_counties&quot;],
+    &quot;analysis_region&quot;
+)</code></pre>
+</div>
+<h2 id="Persistence-and-Versioning" class="md-heading">Persistence and Versioning<a href="#Persistence-and-Versioning" class="md-heading-anchor" aria-label="Link to this section">#</a></h2>
+<p>All set operations create new GEOID sets that are:</p>
+<ol class="md-list-tight">
+<li><p>Stored in the database</p>
+</li>
+<li><p>Versioned like any other GEOID set</p>
+</li>
+<li><p>Available for further operations or analysis</p>
+</li>
+</ol>
+<p>This means you can:</p>
+<ul class="md-list-tight">
+<li><p>Track how your geographic definitions were created</p>
+</li>
+<li><p>Modify the resulting sets with normal GEOID set operations</p>
+</li>
+<li><p>Roll back changes if needed</p>
+</li>
+<li><p>Export and import the sets with their full history </p>
+</li>
+</ul>
+      </article>
+      <footer class="md-footer">
+<p>Built with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and <a href="https://github.com/mthelm85/MaterialDocs.jl">MaterialDocs.jl</a>.</p>
+      </footer>
+    </main>
+    <aside class="md-toc">
+      <div class="md-toc-inner">
+        <p class="md-toc-title">On this page</p>
+          <a class="md-toc-link md-toc-h2" href="#Available-Operations">Available Operations</a>
+          <a class="md-toc-link md-toc-h2" href="#Union-Operation">Union Operation</a>
+            <a class="md-toc-link md-toc-h3" href="#Example">Example</a>
+            <a class="md-toc-link md-toc-h3" href="#Parameters">Parameters</a>
+          <a class="md-toc-link md-toc-h2" href="#Intersection-Operation">Intersection Operation</a>
+            <a class="md-toc-link md-toc-h3" href="#Example-2">Example</a>
+            <a class="md-toc-link md-toc-h3" href="#Parameters-2">Parameters</a>
+          <a class="md-toc-link md-toc-h2" href="#Difference-Operation">Difference Operation</a>
+            <a class="md-toc-link md-toc-h3" href="#Example-3">Example</a>
+            <a class="md-toc-link md-toc-h3" href="#Parameters-3">Parameters</a>
+          <a class="md-toc-link md-toc-h2" href="#Symmetric-Difference-Operation">Symmetric Difference Operation</a>
+            <a class="md-toc-link md-toc-h3" href="#Example-4">Example</a>
+            <a class="md-toc-link md-toc-h3" href="#Parameters-4">Parameters</a>
+          <a class="md-toc-link md-toc-h2" href="#Combining-Operations">Combining Operations</a>
+          <a class="md-toc-link md-toc-h2" href="#Persistence-and-Versioning">Persistence and Versioning</a>
+      </div>
+    </aside>
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/julia.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/julia-repl.min.js"></script>
+  <script>hljs.highlightAll();</script>
+  <script src="../../siteinfo.js"></script>
+  <script src="../../../versions.js"></script>
+  <script src="../../assets/materialdocs.js?v=d8676150"></script>
+</body>
+</html>
