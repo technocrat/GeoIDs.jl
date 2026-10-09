@@ -1,7 +1,7 @@
 name = "GeoIDs"
 uuid = "25e60e9c-9b34-47d8-b7be-b6c1c3d92e0e"
 authors = ["Richard Careaga <public@careaga.net>"]
-version = "0.1.0"
+version = "1.0.1"
 
 [deps]
 ArchGDAL = "c9ce4bd3-c3d5-55b8-8973-c0e20141b8c3"
