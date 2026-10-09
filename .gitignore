@@ -26,7 +26,6 @@ Thumbs.db
 
 # Julia environemnt files
 Manifest.toml
-!docs/Manifest.toml
 
 # Logs and temporary files
 *.log
@@ -34,3 +33,4 @@ Manifest.toml
 .vscode/
 .idea/
 .ipynb_checkpoints/ 
+docs/Manifest.toml

@@ -1,15 +1,19 @@
 using Documenter
+using MaterialDocs
 using GeoIDs
 
-makedocs(
+makedocs(;
     sitename = "GeoIDs.jl",
-    format = Documenter.HTML(
-        prettyurls = get(ENV, "CI", nothing) == "true",
+    authors = "Richard Careaga <public@careaga.net>",
+    modules = [GeoIDs],
+    format = Material3(;
+        theme = :ocean_depth,
+        dark_mode = :toggle,
+        edit_link = "main",
+        prettyurls = get(ENV, "CI", "false") == "true",
         canonical = "https://technocrat.github.io/GeoIDs.jl",
     ),
-    modules = [GeoIDs],
-    authors = "Richard Careaga <public@careaga.net>",
-    repo = "https://github.com/technocrat/GeoIDs.jl/blob/{commit}{path}#L{line}",
+    repo = Remotes.GitHub("technocrat", "GeoIDs.jl"),
     pages = [
         "Home" => "index.md",
         "User Guide" => [
@@ -32,10 +36,10 @@ makedocs(
         ],
         "Contributing" => "contributing.md",
     ],
+    checkdocs = :none,
 )
 
-deploydocs(
+deploydocs(;
     repo = "github.com/technocrat/GeoIDs.jl.git",
     devbranch = "main",
-    push_preview = true,
-) 
+)

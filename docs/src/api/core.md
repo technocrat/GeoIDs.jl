@@ -34,12 +34,6 @@ backup_geoid_sets
 restore_geoid_sets
 ```
 
-## Other Core Functions
-
-```@docs
-__init__
-```
-
 ## Module Index
 
 ```@index

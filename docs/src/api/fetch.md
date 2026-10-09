@@ -25,20 +25,9 @@ get_eastern_geoids
 get_florida_south_geoids
 ```
 
-## County Information
-
-Functions for retrieving information about counties:
-
-```@docs
-get_county_name
-get_county_geom
-get_county_centroid
-```
-
 ## County Retrieval
 
 ```@docs
-get_geoids_by_state
 get_geoids_by_states
 get_geoids_by_county_names
 get_geoids_by_population_range

@@ -11,7 +11,6 @@ The Setup module provides functionality for initializing the database schema and
 Main function to completely initialize the database:
 
 ```@docs
-initialize_database
 ensure_database_exists
 ```
 
